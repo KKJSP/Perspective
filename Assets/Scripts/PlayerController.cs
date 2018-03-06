@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public static int pos;
     RaycastHit hitInfo = new RaycastHit();
     int lookAngle;
 
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour {
     public void MovePlayer(int toAngle)
     {
         lookAngle += toAngle;
-        int pos = (lookAngle/90)%4;
+        pos = (lookAngle/90)%4;
         while(pos < 0)
         {
             pos += 4;
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour {
         if (Physics.Raycast(camPos, dir, out hitInfo))
         {
             //Debug.Log(hitInfo.collider.name + ", " + hitInfo.collider.tag);
-            Vector3 newpos = hitInfo.collider.gameObject.transform.position;
+            Vector3 newpos = hitInfo.collider.gameObject.transform.parent.position;
             //print(newpos);
             newpos.y = newpos.y + 1;
             transform.position = newpos;

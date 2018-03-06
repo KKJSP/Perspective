@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour {
 
-    static float pan, camRotationSpeed;
-    static Vector2 camInitialPos, camCurrentPos;
+    static float pan, camRotationSpeed, deltaPos;
     GameObject mainCamera, player;
     float angle;
 
@@ -14,7 +13,7 @@ public class InputManager : MonoBehaviour {
     {
         angle = 0;
         pan = 0;
-        camRotationSpeed = 0.01f;
+        camRotationSpeed = 10f;
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -29,8 +28,8 @@ public class InputManager : MonoBehaviour {
         }
         if (pan==3)
         {
-            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, camRotationSpeed * (camInitialPos.x - camCurrentPos.x));
-            angle += camRotationSpeed * (camInitialPos.x - camCurrentPos.x);
+            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, deltaPos*camRotationSpeed);
+            angle += deltaPos*camRotationSpeed;
             //print(angle);
         }
         if(pan==2)
@@ -72,19 +71,14 @@ public class InputManager : MonoBehaviour {
         pan = value;
     }
 
-    public static void SetCamInitialPos(Vector2 value)
-    {
-        camInitialPos = value;
-    }
-
     public static void SetCamRotationSpeed(float value)
     {
         camRotationSpeed = value;
     }
 
-    public static void SetCamCurrentPos(Vector2 value)
+    public static void SetDeltaPos(float value)
     {
-        camCurrentPos = value;
+        deltaPos = value;
     }
 
 }

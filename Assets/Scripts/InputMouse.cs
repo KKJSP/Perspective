@@ -16,12 +16,11 @@ public class InputMouse : MonoBehaviour {
         if(Input.GetMouseButtonDown(0))
         {
             InputManager.SetPan(1);
-            InputManager.SetCamInitialPos(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
         }
 
         if (Input.GetMouseButton(0))
         {
-            InputManager.SetCamCurrentPos(Input.mousePosition);         
+            InputManager.SetDeltaPos(Input.GetAxis("Mouse X"));         
         }
 
         if(Input.GetMouseButtonUp(0))
