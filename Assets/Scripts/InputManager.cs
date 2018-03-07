@@ -7,10 +7,13 @@ public class InputManager : MonoBehaviour {
     static float pan, camRotationSpeed, deltaPos;
     GameObject mainCamera, player;
     float angle;
+    bool changeAngle;
+    static Vector3 pos = Vector3.zero;
 
     // Use this for initialization
     void Start()
     {
+        changeAngle = true;
         angle = 0;
         pan = 0;
         camRotationSpeed = 10f;
@@ -22,25 +25,29 @@ public class InputManager : MonoBehaviour {
 	void Update () {
         if(pan == 1)
         {
-            mainCamera.transform.Rotate(25, 0, 0, Space.Self);
-            mainCamera.transform.position.Set(mainCamera.transform.position.x, 6, mainCamera.transform.position.z);
-            pan = 3;            
+            Ray ray = Camera.main.ScreenPointToRay(pos);
+            player.GetComponent<PlayerController>().CheckPath(ray);
+            pan = 0;
         }
         if (pan==3)
         {
+            if (changeAngle)
+            {
+                mainCamera.transform.Rotate(25, 0, 0, Space.Self);
+                mainCamera.transform.position.Set(mainCamera.transform.position.x, 6, mainCamera.transform.position.z);
+                changeAngle = false;
+            }
             mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, deltaPos*camRotationSpeed);
             angle += deltaPos*camRotationSpeed;
-            //print(angle);
         }
-        if(pan==2)
+        if(pan==2 && changeAngle==false)
         {
             int finalAngle;
             finalAngle = Mathf.RoundToInt(angle / 90);
             finalAngle = finalAngle * 90;
-            //print(finalAngle);
             pan = 0;
-            StartCoroutine(SnapRotation(finalAngle));
-            
+            StartCoroutine(SnapRotation(finalAngle));    // Fixing Camera After Input End
+
         }
 
 
@@ -53,7 +60,6 @@ public class InputManager : MonoBehaviour {
         {
             mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 5*rotDir);
             angle += 5*rotDir;
-            //print(angle);
             yield return null;
         }
 
@@ -62,10 +68,11 @@ public class InputManager : MonoBehaviour {
         mainCamera.transform.Rotate(-25, 0, 0, Space.Self);
         mainCamera.transform.position.Set(mainCamera.transform.position.x, -2, mainCamera.transform.position.z);
         player.GetComponent<PlayerController>().MovePlayer(toAngle);
+        changeAngle = true;
     }
 
     
-
+    // Setter Functions
     public static void SetPan(float value)
     {
         pan = value;
@@ -79,6 +86,11 @@ public class InputManager : MonoBehaviour {
     public static void SetDeltaPos(float value)
     {
         deltaPos = value;
+    }
+
+    public static void SetPos(Vector3 value)
+    {
+        pos = value;
     }
 
 }
