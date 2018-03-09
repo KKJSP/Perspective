@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class Configurer : MonoBehaviour {
 
-    RaycastHit hitInfo = new RaycastHit();
     public GameObject left, right;
+
+    int layer;
+    float maxRayDist;
+
+    RaycastHit hitInfo, checkAbove = new RaycastHit();
 
     // Use this for initialization
     void Start () {
         left = right = null;
+        layer = PlayerController.layer;
+        maxRayDist = PlayerController.maxRayDist;
 
 
         //Finding Neighbours
@@ -51,13 +57,27 @@ public class Configurer : MonoBehaviour {
 
         if (camPosleft != Vector3.zero && posleft != transform.position)
         {
-            if (Physics.Raycast(camPosright, dir_right, out hitInfo))
+            if (Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
             {
-                right = hitInfo.transform.gameObject;
+                camPosright.y += 1;
+                if(!Physics.Raycast(camPosright, dir_right, out checkAbove, maxRayDist, layer))
+                    right = hitInfo.transform.gameObject;
             }
-            if (Physics.Raycast(camPosleft, dir_left, out hitInfo))
+            if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
             {
-                left = hitInfo.transform.gameObject;
+                camPosleft.y += 1;
+                if(!Physics.Raycast(camPosleft, dir_left, out checkAbove, maxRayDist, layer))
+                    left = hitInfo.transform.gameObject;
+            }
+
+            Vector3 posup = transform.position;
+            posup.y += 1;
+            Vector3 camPosup = posup - dir_right;
+
+            if(Physics.Raycast(camPosup, dir_right, out hitInfo, maxRayDist, layer))
+            {
+                left = null;
+                right = null;
             }
         }
     }

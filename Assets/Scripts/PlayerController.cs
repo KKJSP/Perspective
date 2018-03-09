@@ -4,10 +4,33 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public static int pos;
-    RaycastHit hitInfo = new RaycastHit();
+    public static int pos, layer;
+    public static float maxRayDist = 100f;
     int lookAngle;
+
+    RaycastHit hitInfo = new RaycastHit();
+
     GameObject nextBlock;
+
+    IEnumerator coroutine;
+
+    private void OnEnable()
+    {
+        InputManager.Snapped += MovePlayer;
+        InputManager.PlayerMover += CheckPath;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.Snapped -= MovePlayer;
+        InputManager.PlayerMover -= CheckPath;
+    }
+
+    private void Awake()
+    {
+        layer = LayerMask.GetMask("PathBlock");
+    }
+
 
     // Use this for initialization
     void Start () {
@@ -18,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        MovePlayer(0);
+
 	}
 
     //Teleporting Player on Each 2D View Switch
@@ -52,7 +75,7 @@ public class PlayerController : MonoBehaviour {
         }
         Vector3 dir = position - camPos;
 
-        if (Physics.Raycast(camPos, dir, out hitInfo))
+        if (Physics.Raycast(camPos, dir, out hitInfo, maxRayDist, layer))
         {
             Vector3 newpos = hitInfo.collider.gameObject.transform.parent.position;
             newpos.y = newpos.y + 1;
@@ -63,16 +86,23 @@ public class PlayerController : MonoBehaviour {
     //Checking If path exists
     public void CheckPath(Ray ray)
     {
-        if (Physics.Raycast(ray, out hitInfo))
+        if (Physics.Raycast(ray, out hitInfo, maxRayDist, layer))
         {
             GameObject finalQuadHit = hitInfo.transform.gameObject;
+            if(coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+
             if (CheckRight(finalQuadHit) != null)
             {
-                StartCoroutine(TranslatePlayer(-1, CheckRight(finalQuadHit), finalQuadHit));
+                coroutine = TranslatePlayer(-1, CheckRight(finalQuadHit), finalQuadHit);
+                StartCoroutine(coroutine);
             }
             if (CheckLeft(finalQuadHit) != null)
             {
-                StartCoroutine(TranslatePlayer(1, CheckLeft(finalQuadHit), finalQuadHit));
+                coroutine = TranslatePlayer(1, CheckLeft(finalQuadHit), finalQuadHit);
+                StartCoroutine(coroutine);
             }
         }
     }
@@ -129,6 +159,10 @@ public class PlayerController : MonoBehaviour {
 
             Vector3 newpos = new Vector3(nextBlock.transform.parent.position.x, nextBlock.transform.parent.position.y + 1, nextBlock.transform.parent.position.z);
             transform.position = newpos;
+
+            if (nextBlock == finalBlock)
+                break;
+
             yield return new WaitForSeconds(0.25f);
 
         }

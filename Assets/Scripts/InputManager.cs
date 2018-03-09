@@ -4,54 +4,123 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour {
 
-    static float pan, camRotationSpeed, deltaPos;
-    GameObject mainCamera, player;
-    float angle;
-    bool changeAngle;
-    static Vector3 pos = Vector3.zero;
+    static float camRotationSpeed, deltaPos;
 
-    // Use this for initialization
+    bool changeAngle;
+
+    float angle;
+
+    GameObject mainCamera;
+
+    public delegate void VoidIntDelegate(int i);
+    public delegate void VoidRayDelegate(Ray ray);
+    public static VoidIntDelegate Snapped;
+    public static VoidRayDelegate PlayerMover;
+
+#if UNITY_EDITOR
+
+    bool drag = false;
+    int mouseButtonReleaseBlurRange = 2;
+    Vector3 Button0DownPoint;
+    Vector3 Button0UpPoint;
+
+#endif
+
+
+
     void Start()
     {
         changeAngle = true;
         angle = 0;
-        pan = 0;
         camRotationSpeed = 10f;
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        player = GameObject.FindGameObjectWithTag("Player");
+        Snapped(0);
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if(pan == 1)
+
+
+
+#if UNITY_EDITOR
+
+
+    void Update()
+    {
+
+        //  CLICKS FOR MOUSE BUTTON
+
+        if (Input.GetButtonDown("Fire1"))
         {
-            Ray ray = Camera.main.ScreenPointToRay(pos);
-            player.GetComponent<PlayerController>().CheckPath(ray);
-            pan = 0;
+            Button0DownPoint = Input.mousePosition;
         }
-        if (pan==3)
+
+        if (Input.GetButtonUp("Fire1"))
         {
-            if (changeAngle)
+            Button0UpPoint = Input.mousePosition;
+
+            if (IsInRange(Button0DownPoint, Button0UpPoint))
             {
-                mainCamera.transform.Rotate(25, 0, 0, Space.Self);
-                mainCamera.transform.position.Set(mainCamera.transform.position.x, 6, mainCamera.transform.position.z);
-                changeAngle = false;
+                Mouse0Click();  //Function where all actions associated with LMB clicks are performed
             }
-            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, deltaPos*camRotationSpeed);
-            angle += deltaPos*camRotationSpeed;
+
+            if (drag && changeAngle == false)
+            {
+                int finalAngle;
+                finalAngle = Mathf.RoundToInt(angle / 90);
+                finalAngle = finalAngle * 90;
+                StartCoroutine(SnapRotation(finalAngle));    // Fixing Camera After Input End
+                drag = false;
+            }
         }
-        if(pan==2 && changeAngle==false)
+
+
+        //  DRAGS FOR MOUSE
+
+        if (Input.GetButton("Fire1"))
         {
-            int finalAngle;
-            finalAngle = Mathf.RoundToInt(angle / 90);
-            finalAngle = finalAngle * 90;
-            pan = 0;
-            StartCoroutine(SnapRotation(finalAngle));    // Fixing Camera After Input End
-
+            if (Input.mousePosition != Button0DownPoint)
+            {
+                Mouse0Drag();//Function where all actions associated with LMB drag are performed
+            }
         }
 
 
-	}
+    }
+
+    bool IsInRange(Vector2 v1, Vector2 v2)
+    {
+        if (Vector2.Distance(v1, v2) < mouseButtonReleaseBlurRange)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    void Mouse0Click()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+        if (PlayerMover != null)
+            PlayerMover(ray);
+    }
+
+    void Mouse0Drag()
+    {
+        deltaPos = Input.GetAxis("Mouse X");
+        if (changeAngle)
+        {
+            mainCamera.transform.Rotate(25, 0, 0, Space.Self);
+            mainCamera.transform.position.Set(mainCamera.transform.position.x, 6, mainCamera.transform.position.z);
+            changeAngle = false;
+        }
+        mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, deltaPos * camRotationSpeed);
+        angle += deltaPos * camRotationSpeed;
+        drag = true;
+    }
+
+
+#endif
+
+
 
     IEnumerator SnapRotation(int toAngle)
     {
@@ -67,30 +136,10 @@ public class InputManager : MonoBehaviour {
         angle = 0;
         mainCamera.transform.Rotate(-25, 0, 0, Space.Self);
         mainCamera.transform.position.Set(mainCamera.transform.position.x, -2, mainCamera.transform.position.z);
-        player.GetComponent<PlayerController>().MovePlayer(toAngle);
+        if(Snapped != null)
+            Snapped(toAngle);
         changeAngle = true;
     }
 
-    
-    // Setter Functions
-    public static void SetPan(float value)
-    {
-        pan = value;
-    }
-
-    public static void SetCamRotationSpeed(float value)
-    {
-        camRotationSpeed = value;
-    }
-
-    public static void SetDeltaPos(float value)
-    {
-        deltaPos = value;
-    }
-
-    public static void SetPos(Vector3 value)
-    {
-        pos = value;
-    }
 
 }
