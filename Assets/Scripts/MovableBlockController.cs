@@ -4,32 +4,49 @@ using UnityEngine;
 
 public class MovableBlockController : MonoBehaviour {
 
-    public GameObject button;
-    InteractionScript interactionScript;
+    int i, max = 5;
+
+    public GameObject[] buttons;
+    InteractionScript[] interactionScripts;
 
     public Vector3 newPos;
     Vector3 oldPos;
 
-	// Use this for initialization
-	void Start () {
-        oldPos = transform.position;
-	}
 
     private void Awake()
     {
-        interactionScript = button.GetComponent<InteractionScript>();
+        interactionScripts = new InteractionScript[max];
+        i = 0;
+        foreach (GameObject button in buttons)
+        {
+            interactionScripts[i] = button.GetComponent<InteractionScript>();
+            i++;
+        }
+        
     }
+
+    // Use this for initialization
+    void Start () {
+        oldPos = transform.position;
+	}
+
 
     private void OnEnable()
     {
-        interactionScript.ButtonHeld += MoveToNew;
-        interactionScript.ButtonIdle += MoveToOld;
+        for (int k = 0; k < i; k++)
+        {
+            interactionScripts[k].ButtonHeld += MoveToNew;
+            interactionScripts[k].ButtonIdle += MoveToOld;
+        }
     }
 
     private void OnDisable()
     {
-        interactionScript.ButtonHeld -= MoveToNew;
-        interactionScript.ButtonIdle -= MoveToOld;
+        for (int k = 0; k < i; k++)
+        {
+            interactionScripts[k].ButtonHeld -= MoveToNew;
+            interactionScripts[k].ButtonIdle -= MoveToOld;
+        }
     }
 
     // Update is called once per frame

@@ -15,7 +15,7 @@ public class InputManager : MonoBehaviour {
     public delegate void VoidIntDelegate(int i);
     public delegate void VoidRayDelegate(Ray ray);
     public static VoidIntDelegate Snapped;
-    public static VoidRayDelegate PlayerMover;
+    public static VoidRayDelegate OnClickFunctions;
 
 #if UNITY_EDITOR
 
@@ -99,8 +99,9 @@ public class InputManager : MonoBehaviour {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        if (PlayerMover != null)
-            PlayerMover(ray);
+        if (OnClickFunctions != null)
+            OnClickFunctions(ray);
+
     }
 
     void Mouse0Drag()
@@ -140,6 +141,7 @@ public class InputManager : MonoBehaviour {
             Snapped(toAngle);
         changeAngle = true;
     }
+
 
 
 }

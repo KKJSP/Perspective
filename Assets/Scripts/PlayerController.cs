@@ -17,13 +17,13 @@ public class PlayerController : MonoBehaviour {
     private void OnEnable()
     {
         InputManager.Snapped += MovePlayer;
-        InputManager.PlayerMover += CheckPath;
+        InputManager.OnClickFunctions += CheckPath;
     }
 
     private void OnDisable()
     {
         InputManager.Snapped -= MovePlayer;
-        InputManager.PlayerMover -= CheckPath;
+        InputManager.OnClickFunctions -= CheckPath;
     }
 
     private void Awake()

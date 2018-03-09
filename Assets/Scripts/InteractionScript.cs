@@ -21,12 +21,18 @@ public class InteractionScript : MonoBehaviour {
 
     public void ButtonPressed()
     {
-        ButtonHeld();
+        if (ButtonHeld != null)
+        {
+            ButtonHeld();
+        }
     }
 
     public void ButtonLeft()
     {
-        ButtonIdle();
+        if (ButtonHeld != null)
+        {
+            ButtonIdle();
+        }
     }
 
     
