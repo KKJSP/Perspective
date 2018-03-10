@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class MovableBlockController : MonoBehaviour {
 
+    bool isMoved = false;
+
     int i, max = 5;
+    public float maxDistanceDelta = 0.01f;
 
     public GameObject[] buttons;
     InteractionScript[] interactionScripts;
@@ -12,6 +15,7 @@ public class MovableBlockController : MonoBehaviour {
     public Vector3 newPos;
     Vector3 oldPos;
 
+    IEnumerator coroutine;
 
     private void Awake()
     {
@@ -35,8 +39,7 @@ public class MovableBlockController : MonoBehaviour {
     {
         for (int k = 0; k < i; k++)
         {
-            interactionScripts[k].ButtonHeld += MoveToNew;
-            interactionScripts[k].ButtonIdle += MoveToOld;
+            interactionScripts[k].ObjectTouch += MoveToNew;
         }
     }
 
@@ -44,8 +47,7 @@ public class MovableBlockController : MonoBehaviour {
     {
         for (int k = 0; k < i; k++)
         {
-            interactionScripts[k].ButtonHeld -= MoveToNew;
-            interactionScripts[k].ButtonIdle -= MoveToOld;
+            interactionScripts[k].ObjectTouch -= MoveToNew;
         }
     }
 
@@ -56,12 +58,32 @@ public class MovableBlockController : MonoBehaviour {
 
     void MoveToNew()
     {
-        transform.position = newPos;
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        if (!isMoved)
+        {
+            coroutine = MoveBlock(newPos);
+            StartCoroutine(coroutine);
+            isMoved = true;
+        }
+        else if (isMoved)
+        {
+            coroutine = MoveBlock(oldPos);
+            StartCoroutine(coroutine);
+            isMoved = false;
+        }
     }
 
-    void MoveToOld()
+    IEnumerator MoveBlock(Vector3 target)
     {
-        transform.position = oldPos;
+        while (transform.position != target)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
+            yield return new WaitForSeconds(0.01f);
+        }
+
     }
 
 

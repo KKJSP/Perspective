@@ -5,6 +5,7 @@ using UnityEngine;
 public class InputManager : MonoBehaviour {
 
     static float camRotationSpeed, deltaPos;
+    public static bool lock3D = false;
 
     bool changeAngle;
 
@@ -106,16 +107,19 @@ public class InputManager : MonoBehaviour {
 
     void Mouse0Drag()
     {
-        deltaPos = Input.GetAxis("Mouse X");
-        if (changeAngle)
+        if (!lock3D)
         {
-            mainCamera.transform.Rotate(25, 0, 0, Space.Self);
-            mainCamera.transform.position.Set(mainCamera.transform.position.x, 6, mainCamera.transform.position.z);
-            changeAngle = false;
+            deltaPos = Input.GetAxis("Mouse X");
+            if (changeAngle)
+            {
+                mainCamera.transform.Rotate(25, 0, 0, Space.Self);
+                mainCamera.transform.position.Set(mainCamera.transform.position.x, 6, mainCamera.transform.position.z);
+                changeAngle = false;
+            }
+            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, deltaPos * camRotationSpeed);
+            angle += deltaPos * camRotationSpeed;
+            drag = true;
         }
-        mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, deltaPos * camRotationSpeed);
-        angle += deltaPos * camRotationSpeed;
-        drag = true;
     }
 
 

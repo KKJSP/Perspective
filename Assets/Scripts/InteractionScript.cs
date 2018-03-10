@@ -7,7 +7,7 @@ public class InteractionScript : MonoBehaviour {
     public GameObject[] Interactives;
 
     public delegate void VoidVoidDelegate();
-    public VoidVoidDelegate ButtonHeld, ButtonIdle;
+    public VoidVoidDelegate ObjectTouch;
 
 	// Use this for initialization
 	void Start () {
@@ -19,19 +19,12 @@ public class InteractionScript : MonoBehaviour {
 		
 	}
 
-    public void ButtonPressed()
-    {
-        if (ButtonHeld != null)
-        {
-            ButtonHeld();
-        }
-    }
 
-    public void ButtonLeft()
+    public void ButtonSwitchTouch()
     {
-        if (ButtonHeld != null)
+        if(ObjectTouch != null)
         {
-            ButtonIdle();
+            ObjectTouch();
         }
     }
 

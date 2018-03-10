@@ -141,6 +141,8 @@ public class PlayerController : MonoBehaviour {
     //Moving the player
     IEnumerator TranslatePlayer(int direction, GameObject initialBlock, GameObject finalBlock)
     {
+        InputManager.lock3D = true;
+
         if(nextBlock == null)
         {
             nextBlock = initialBlock;
@@ -167,6 +169,7 @@ public class PlayerController : MonoBehaviour {
 
         }
         nextBlock = null;
+        InputManager.lock3D = false;
 
     }
 

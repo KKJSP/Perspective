@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SwitchController : MonoBehaviour {
 
-    bool pressed = false;
 
     float maxRayDist = 100f;
 
@@ -42,15 +41,9 @@ public class SwitchController : MonoBehaviour {
     void SwitchTouch(Ray ray)
     {
         if(Physics.Raycast(ray, out hitInfo, maxRayDist, layer))
-        if (!pressed && hitInfo.transform == transform)
+        if (hitInfo.transform == transform)
         {
-            pressed = true;
-            this.GetComponent<InteractionScript>().ButtonPressed();
-        }
-        else if (pressed && hitInfo.transform == transform)
-        {
-            pressed = false;
-            this.GetComponent<InteractionScript>().ButtonLeft();
+            this.GetComponent<InteractionScript>().ButtonSwitchTouch();
         }
 
     }

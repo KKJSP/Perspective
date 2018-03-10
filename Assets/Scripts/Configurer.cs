@@ -9,7 +9,7 @@ public class Configurer : MonoBehaviour {
     int layer;
     float maxRayDist;
 
-    RaycastHit hitInfo, checkAbove = new RaycastHit();
+    RaycastHit hitInfo = new RaycastHit();
 
     // Use this for initialization
     void Start () {
@@ -59,15 +59,17 @@ public class Configurer : MonoBehaviour {
         {
             if (Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
             {
+                var hit = hitInfo;
                 camPosright.y += 1;
-                if(!Physics.Raycast(camPosright, dir_right, out checkAbove, maxRayDist, layer))
-                    right = hitInfo.transform.gameObject;
+                if(!Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
+                    right = hit.transform.gameObject;
             }
             if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
             {
+                var hit = hitInfo;
                 camPosleft.y += 1;
-                if(!Physics.Raycast(camPosleft, dir_left, out checkAbove, maxRayDist, layer))
-                    left = hitInfo.transform.gameObject;
+                if(!Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
+                    left = hit.transform.gameObject;
             }
 
             Vector3 posup = transform.position;

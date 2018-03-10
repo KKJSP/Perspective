@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ButtonController : MonoBehaviour {
 
-    bool pressed = false;
-
+    
 	// Use this for initialization
 	void Start () {
 		
@@ -18,31 +17,36 @@ public class ButtonController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            if (tag == "ToggleButton" && !pressed)
-            {
-                pressed = true;
-                this.GetComponent<InteractionScript>().ButtonPressed();
-            }
-            else if (tag == "ToggleButton" && pressed)
-            {
-                pressed = false;
-                this.GetComponent<InteractionScript>().ButtonLeft();
-            }
-            else if (tag == "PushButton")
-            {
-                this.GetComponent<InteractionScript>().ButtonPressed();
-            }
 
+
+        if (tag == "ToggleButton" || tag == "PushButton")
+        {
+            this.GetComponent<InteractionScript>().ButtonSwitchTouch();
         }
+
+        Vector3 scale = transform.localScale;
+        Vector3 pos = transform.position;
+        scale.y /= 2;
+        pos.y -= 0.25f;
+        transform.localScale = scale;
+        transform.position = pos;
+
+
+
     }
 
     void OnTriggerExit(Collider other)
     {
         if (tag == "PushButton")
         {
-            this.GetComponent<InteractionScript>().ButtonLeft();
+            this.GetComponent<InteractionScript>().ButtonSwitchTouch();
         }
+
+        Vector3 scale = transform.localScale;
+        Vector3 pos = transform.position;
+        scale.y *= 2;
+        pos.y += 0.25f;
+        transform.localScale = scale;
+        transform.position = pos;
     }
 }
