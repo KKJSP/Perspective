@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PushButton
   - ToggleButton
+  - MovableBlock
   layers:
   - Default
   - TransparentFX

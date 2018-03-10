@@ -499,9 +499,14 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
+        type: 2}
+      propertyPath: buttons.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4814213470451260, guid: f4ae0e807b1f6c247add11345d4ea827, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4814213470451260, guid: f4ae0e807b1f6c247add11345d4ea827, type: 2}
       propertyPath: m_LocalPosition.y
@@ -531,31 +536,24 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
+        type: 2}
+      propertyPath: buttons.Array.data[0]
+      value: 
+      objectReference: {fileID: 420294379}
+    - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
+        type: 2}
+      propertyPath: buttons.Array.data[1]
+      value: 
+      objectReference: {fileID: 1267941746}
+    - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
+        type: 2}
+      propertyPath: buttons.Array.data[2]
+      value: 
+      objectReference: {fileID: 1242112401}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f4ae0e807b1f6c247add11345d4ea827, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &965601434 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1715884531967176, guid: f4ae0e807b1f6c247add11345d4ea827,
-    type: 2}
-  m_PrefabInternal: {fileID: 965601433}
---- !u!114 &965601435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 965601434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11561d1bc0e211746ae7859dc90c87ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxDistanceDelta: 0.25
-  buttons:
-  - {fileID: 420294379}
-  - {fileID: 1267941746}
-  - {fileID: 1242112401}
-  newPos: {x: -4, y: -2, z: 0}
 --- !u!1001 &1038551803
 Prefab:
   m_ObjectHideFlags: 0

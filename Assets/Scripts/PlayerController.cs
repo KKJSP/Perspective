@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour {
     //Teleporting Player on Each 2D View Switch
     public void MovePlayer(int toAngle)
     {
+
         lookAngle += toAngle;
         pos = (lookAngle/90)%4;
         while(pos < 0)
@@ -80,6 +81,7 @@ public class PlayerController : MonoBehaviour {
             Vector3 newpos = hitInfo.collider.gameObject.transform.parent.position;
             newpos.y = newpos.y + 1;
             transform.position = newpos;
+
         }
     }
 

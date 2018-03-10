@@ -10,7 +10,7 @@ public class MovableBlockController : MonoBehaviour {
     int i, max = 5;
     public float maxDistanceDelta = 0.001f;
 
-    GameObject mainCamera;
+    GameObject mainCamera, objectAbove;
 
     public GameObject[] buttons;
     InteractionScript[] interactionScripts;
@@ -82,14 +82,25 @@ public class MovableBlockController : MonoBehaviour {
 
     IEnumerator MoveBlock(Vector3 target)
     {
+        Vector3 targetAbove = target;
+
         if (largeAnim)
         {
             mainCamera.transform.Rotate(25, 0, 0, Space.Self);
             mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y + 2, mainCamera.transform.position.z);
         }
 
+        if (objectAbove != null)
+        {
+            targetAbove.y += objectAbove.transform.position.y - transform.position.y;
+        }
+
         while (transform.position != target)
         {
+            if(objectAbove != null)
+            {
+                objectAbove.transform.position = Vector3.MoveTowards(objectAbove.transform.position, targetAbove, maxDistanceDelta);
+            }
             transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
             yield return new WaitForSeconds(0.01f);
         }
@@ -100,6 +111,11 @@ public class MovableBlockController : MonoBehaviour {
             mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 2, mainCamera.transform.position.z);
         }
 
+    }
+
+    public void SetObjectAbove(GameObject value)
+    {
+        objectAbove = value;
     }
 
 
