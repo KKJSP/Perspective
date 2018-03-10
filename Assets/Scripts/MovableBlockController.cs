@@ -5,9 +5,12 @@ using UnityEngine;
 public class MovableBlockController : MonoBehaviour {
 
     bool isMoved = false;
+    public bool largeAnim = false;
 
     int i, max = 5;
-    public float maxDistanceDelta = 0.01f;
+    public float maxDistanceDelta = 0.001f;
+
+    GameObject mainCamera;
 
     public GameObject[] buttons;
     InteractionScript[] interactionScripts;
@@ -32,7 +35,8 @@ public class MovableBlockController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         oldPos = transform.position;
-	}
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+    }
 
 
     private void OnEnable()
@@ -78,10 +82,22 @@ public class MovableBlockController : MonoBehaviour {
 
     IEnumerator MoveBlock(Vector3 target)
     {
+        if (largeAnim)
+        {
+            mainCamera.transform.Rotate(25, 0, 0, Space.Self);
+            mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y + 2, mainCamera.transform.position.z);
+        }
+
         while (transform.position != target)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
             yield return new WaitForSeconds(0.01f);
+        }
+
+        if (largeAnim)
+        {
+            mainCamera.transform.Rotate(-25, 0, 0, Space.Self);
+            mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 2, mainCamera.transform.position.z);
         }
 
     }

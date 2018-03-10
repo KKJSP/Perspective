@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour {
 
-    static float camRotationSpeed, deltaPos;
-    public static bool lock3D = false;
+    static float camRotationSpeed, deltaPos, maxDistanceDelta = 0.1f;
+    public static bool lock3D = false, canDrag = true;
 
     bool changeAngle;
 
     float angle;
+
+    Vector3 pos;
 
     GameObject mainCamera;
 
@@ -36,6 +38,7 @@ public class InputManager : MonoBehaviour {
         camRotationSpeed = 10f;
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         Snapped(0);
+        pos = mainCamera.transform.position;
     }
 
 
@@ -79,7 +82,7 @@ public class InputManager : MonoBehaviour {
         {
             if (Input.mousePosition != Button0DownPoint)
             {
-                Mouse0Drag();//Function where all actions associated with LMB drag are performed
+                Mouse0Drag();       //Function where all actions associated with LMB drag are performed
             }
         }
 
@@ -112,13 +115,16 @@ public class InputManager : MonoBehaviour {
             deltaPos = Input.GetAxis("Mouse X");
             if (changeAngle)
             {
-                mainCamera.transform.Rotate(25, 0, 0, Space.Self);
-                mainCamera.transform.position.Set(mainCamera.transform.position.x, 6, mainCamera.transform.position.z);
+                canDrag = false;
+                StartCoroutine(SwitchView("3D"));
                 changeAngle = false;
             }
-            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, deltaPos * camRotationSpeed);
-            angle += deltaPos * camRotationSpeed;
-            drag = true;
+            if (canDrag)
+            {
+                mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, deltaPos * camRotationSpeed);
+                angle += deltaPos * camRotationSpeed;
+                drag = true;
+            }
         }
     }
 
@@ -132,20 +138,58 @@ public class InputManager : MonoBehaviour {
         int rotDir = (int)Mathf.Sign(toAngle-angle);
         while (Mathf.Abs(angle - toAngle) > 6)
         {
-            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 5*rotDir);
-            angle += 5*rotDir;
+            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 2*rotDir);
+            angle += 2*rotDir;
             yield return null;
         }
 
         mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, toAngle - angle);
-        angle = 0;
-        mainCamera.transform.Rotate(-25, 0, 0, Space.Self);
-        mainCamera.transform.position.Set(mainCamera.transform.position.x, -2, mainCamera.transform.position.z);
-        if(Snapped != null)
-            Snapped(toAngle);
+        StartCoroutine(SwitchView("2D"));
+        angle = toAngle;
         changeAngle = true;
     }
 
+    IEnumerator SwitchView(string view)
+    {
+        float rotX;
+        pos = mainCamera.transform.position;
+
+        if (view == "2D")
+        {
+            rotX = 0;
+            pos.y -= 2;
+        }
+        else if (view == "3D")
+        {
+            rotX = 25;
+            pos.y += 2;
+        }
+        else
+        {
+            rotX = mainCamera.transform.localEulerAngles.x;
+        }
+
+        while(Mathf.Abs(mainCamera.transform.localEulerAngles.x - rotX) > 0.1 && Vector3.Distance(mainCamera.transform.position,pos) > 0.1)
+        {
+            mainCamera.transform.Rotate(Mathf.Sign(rotX - mainCamera.transform.localEulerAngles.x), 0, 0, Space.Self);
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, pos, maxDistanceDelta);
+            yield return new WaitForSeconds(0.000001f);
+        }
+
+        mainCamera.transform.localEulerAngles.Set(rotX, 0, 0);
+        mainCamera.transform.position = pos;
+
+        if(view == "3D")
+        {
+            canDrag = true;
+        }
+
+        if (Snapped != null && view == "2D")
+        {
+            Snapped(Mathf.RoundToInt(angle));
+            angle = 0;
+        }
+    }
 
 
 }
