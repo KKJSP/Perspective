@@ -13,11 +13,21 @@ public class Configurer : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        Configure();
+    }
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+    public void Configure()
+    {
         left = right = null;
         layer = PlayerController.layer;
         maxRayDist = PlayerController.maxRayDist;
 
-        if(tag == "Current")
+        if (tag == "Current")
         {
             layer = LayerMask.GetMask("Current", "Switch");
         }
@@ -66,14 +76,14 @@ public class Configurer : MonoBehaviour {
             {
                 var hit = hitInfo;
                 camPosright.y += 1;
-                if(!Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
+                if (!Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
                     right = hit.transform.gameObject;
             }
             if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
             {
                 var hit = hitInfo;
                 camPosleft.y += 1;
-                if(!Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
+                if (!Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
                     left = hit.transform.gameObject;
             }
 
@@ -81,16 +91,25 @@ public class Configurer : MonoBehaviour {
             posup.y += 1;
             Vector3 camPosup = posup - dir_right;
 
-            if(Physics.Raycast(camPosup, dir_right, out hitInfo, maxRayDist, layer))
+            if (Physics.Raycast(camPosup, dir_right, out hitInfo, maxRayDist, layer))
             {
                 left = null;
                 right = null;
             }
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void ReConfigure()
+    {
+        if (right != null)
+        {
+            right.GetComponent<Configurer>().Configure();
+        }
+        if (left != null)
+        {
+            left.GetComponent<Configurer>().Configure();
+        }
+        Configure();
+    }
+
 }

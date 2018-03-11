@@ -102,6 +102,13 @@ public class MovableBlockController : MonoBehaviour {
                 objectAbove.transform.position = Vector3.MoveTowards(objectAbove.transform.position, targetAbove, maxDistanceDelta);
             }
             transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
+
+            transform.Find("Front").GetComponent<Configurer>().ReConfigure();
+            transform.Find("Back").GetComponent<Configurer>().ReConfigure();
+            transform.Find("Left").GetComponent<Configurer>().ReConfigure();
+            transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+
+
             yield return new WaitForSeconds(0.01f);
         }
 
@@ -110,6 +117,11 @@ public class MovableBlockController : MonoBehaviour {
             mainCamera.transform.Rotate(-25, 0, 0, Space.Self);
             mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 2, mainCamera.transform.position.z);
         }
+
+        transform.Find("Front").GetComponent<Configurer>().ReConfigure();
+        transform.Find("Back").GetComponent<Configurer>().ReConfigure();
+        transform.Find("Left").GetComponent<Configurer>().ReConfigure();
+        transform.Find("Right").GetComponent<Configurer>().ReConfigure();
 
     }
 
