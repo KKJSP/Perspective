@@ -22,6 +22,16 @@ public class CurrentTransmitter : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        Configure();
+    }
+
+    // Update is called once per frame
+    void Update () {
+		
+	}
+
+    public void Configure()
+    {
         up = down = left = right = null;
         maxRayDist = PlayerController.maxRayDist;
         layer = LayerMask.GetMask("Current", "Switch");
@@ -113,10 +123,27 @@ public class CurrentTransmitter : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+    public void ReConfigure()
+    {
+        if (right != null)
+        {
+            right.GetComponent<CurrentTransmitter>().Configure();
+        }
+        if (left != null)
+        {
+            left.GetComponent<CurrentTransmitter>().Configure();
+        }
+        if (up != null)
+        {
+            up.GetComponent<CurrentTransmitter>().Configure();
+        }
+        if (down != null)
+        {
+            left.GetComponent<CurrentTransmitter>().Configure();
+        }
+        Configure();
+    }
+
 
     public void ChangeState(GameObject incoming)
     {

@@ -103,10 +103,17 @@ public class MovableBlockController : MonoBehaviour {
             }
             transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
 
-            transform.Find("Front").GetComponent<Configurer>().ReConfigure();
-            transform.Find("Back").GetComponent<Configurer>().ReConfigure();
-            transform.Find("Left").GetComponent<Configurer>().ReConfigure();
-            transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+            if (tag == "MovableBlock")
+            {
+                transform.Find("Front").GetComponent<Configurer>().ReConfigure();
+                transform.Find("Back").GetComponent<Configurer>().ReConfigure();
+                transform.Find("Left").GetComponent<Configurer>().ReConfigure();
+                transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+            }
+            else if (tag == "Current")
+            {
+                GetComponent<CurrentTransmitter>().ReConfigure();
+            }
 
 
             yield return new WaitForSeconds(0.01f);
@@ -118,10 +125,17 @@ public class MovableBlockController : MonoBehaviour {
             mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 2, mainCamera.transform.position.z);
         }
 
-        transform.Find("Front").GetComponent<Configurer>().ReConfigure();
-        transform.Find("Back").GetComponent<Configurer>().ReConfigure();
-        transform.Find("Left").GetComponent<Configurer>().ReConfigure();
-        transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+        if (tag == "MovableBlock")
+        {
+            transform.Find("Front").GetComponent<Configurer>().ReConfigure();
+            transform.Find("Back").GetComponent<Configurer>().ReConfigure();
+            transform.Find("Left").GetComponent<Configurer>().ReConfigure();
+            transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+        }
+        else if (tag == "Current")
+        {
+            GetComponent<CurrentTransmitter>().ReConfigure();
+        }
 
     }
 
