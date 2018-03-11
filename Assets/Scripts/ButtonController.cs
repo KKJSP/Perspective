@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class ButtonController : MonoBehaviour {
 
+    Transform front, back, left, right, mesh;
+
     
 	// Use this for initialization
 	void Start () {
-		
+        front = transform.Find("Front");
+        back = transform.Find("Back");
+        right = transform.Find("Right");
+        left = transform.Find("Left");
+        mesh = transform.Find("Mesh");
+
 	}
 	
 	// Update is called once per frame
@@ -21,15 +28,18 @@ public class ButtonController : MonoBehaviour {
 
         if (tag == "ToggleButton" || tag == "PushButton")
         {
-            this.GetComponent<InteractionScript>().ButtonSwitchTouch();
+            front.GetComponent<CurrentTransmitter>().ChangeState(front.gameObject);
+            back.GetComponent<CurrentTransmitter>().ChangeState(back.gameObject);
+            left.GetComponent<CurrentTransmitter>().ChangeState(left.gameObject);
+            right.GetComponent<CurrentTransmitter>().ChangeState(right.gameObject);
         }
 
-        Vector3 scale = transform.localScale;
-        Vector3 pos = transform.position;
+        Vector3 scale = mesh.localScale;
+        Vector3 pos = mesh.position;
         scale.y /= 2;
-        pos.y -= 0.25f;
-        transform.localScale = scale;
-        transform.position = pos;
+        pos.y -= 0.1f;
+        mesh.localScale = scale;
+        mesh.position = pos;
 
 
 
@@ -39,14 +49,17 @@ public class ButtonController : MonoBehaviour {
     {
         if (tag == "PushButton")
         {
-            this.GetComponent<InteractionScript>().ButtonSwitchTouch();
+            front.GetComponent<CurrentTransmitter>().ChangeState(front.gameObject);
+            back.GetComponent<CurrentTransmitter>().ChangeState(back.gameObject);
+            left.GetComponent<CurrentTransmitter>().ChangeState(left.gameObject);
+            right.GetComponent<CurrentTransmitter>().ChangeState(right.gameObject);
         }
 
-        Vector3 scale = transform.localScale;
-        Vector3 pos = transform.position;
+        Vector3 scale = mesh.localScale;
+        Vector3 pos = mesh.position;
         scale.y *= 2;
-        pos.y += 0.25f;
-        transform.localScale = scale;
-        transform.position = pos;
+        pos.y += 0.1f;
+        mesh.localScale = scale;
+        mesh.position = pos;
     }
 }
