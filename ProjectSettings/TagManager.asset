@@ -7,6 +7,8 @@ TagManager:
   - PushButton
   - ToggleButton
   - MovableBlock
+  - Current
+  - Switch
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - 
   - PathBlock
   - Switch
-  - 
+  - Current
   - 
   - 
   - 

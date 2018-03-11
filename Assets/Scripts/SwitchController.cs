@@ -43,7 +43,7 @@ public class SwitchController : MonoBehaviour {
         if(Physics.Raycast(ray, out hitInfo, maxRayDist, layer))
         if (hitInfo.transform == transform)
         {
-            this.GetComponent<InteractionScript>().ButtonSwitchTouch();
+            this.GetComponent<CurrentTransmitter>().ChangeState(this.gameObject);
         }
 
     }

@@ -17,6 +17,11 @@ public class Configurer : MonoBehaviour {
         layer = PlayerController.layer;
         maxRayDist = PlayerController.maxRayDist;
 
+        if(tag == "Current")
+        {
+            layer = LayerMask.GetMask("Current", "Switch");
+        }
+
 
         //Finding Neighbours
         Vector3 camPosright = Vector3.zero;
