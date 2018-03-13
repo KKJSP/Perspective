@@ -7,13 +7,11 @@ public class MovableBlockController : MonoBehaviour {
     bool isMoved = false;
     public bool largeAnim = false;
 
-    int i, max = 5;
     public float maxDistanceDelta = 0.001f;
 
     GameObject mainCamera, objectAbove;
 
-    public GameObject[] buttons;
-    InteractionScript[] interactionScripts;
+    public InteractionScript[] interactionScripts;
 
     public Vector3 newPos;
     Vector3 oldPos;
@@ -22,13 +20,6 @@ public class MovableBlockController : MonoBehaviour {
 
     private void Awake()
     {
-        interactionScripts = new InteractionScript[max];
-        i = 0;
-        foreach (GameObject button in buttons)
-        {
-            interactionScripts[i] = button.GetComponent<InteractionScript>();
-            i++;
-        }
         
     }
 
@@ -41,18 +32,19 @@ public class MovableBlockController : MonoBehaviour {
 
     private void OnEnable()
     {
-        for (int k = 0; k < i; k++)
+        foreach(InteractionScript interactionScript in interactionScripts)
         {
-            interactionScripts[k].ObjectTouch += MoveToNew;
+            interactionScript.ObjectTouch += MoveToNew;
         }
     }
 
     private void OnDisable()
     {
-        for (int k = 0; k < i; k++)
+        foreach (InteractionScript interactionScript in interactionScripts)
         {
-            interactionScripts[k].ObjectTouch -= MoveToNew;
+            interactionScript.ObjectTouch -= MoveToNew;
         }
+    
     }
 
     // Update is called once per frame

@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public static int pos, layer;
+    public static int pos, prev_pos, layer;
     public static float maxRayDist = 100f;
+    public static GameObject player;
     int lookAngle;
 
     RaycastHit hitInfo = new RaycastHit();
 
     GameObject nextBlock;
+
+    public delegate void VoidIntDelegate(int i);
+    public static VoidIntDelegate PlayerMovedUnit;
 
     IEnumerator coroutine;
 
@@ -29,6 +33,7 @@ public class PlayerController : MonoBehaviour {
     private void Awake()
     {
         layer = LayerMask.GetMask("PathBlock");
+        player = gameObject;
     }
 
 
@@ -37,6 +42,7 @@ public class PlayerController : MonoBehaviour {
         nextBlock = null;
         lookAngle = 0;
         pos = 0;
+        prev_pos = -1;
     }
 
     // Update is called once per frame
@@ -54,6 +60,13 @@ public class PlayerController : MonoBehaviour {
         {
             pos += 4;
         }
+
+        if(pos == prev_pos)
+        {
+            return;
+        }
+        prev_pos = pos;
+
         Vector3 position = new Vector3(transform.position.x, transform.position.y - 1, transform.position.z);
         Vector3 camPos = Vector3.zero;
 
@@ -81,7 +94,10 @@ public class PlayerController : MonoBehaviour {
             Vector3 newpos = hitInfo.collider.gameObject.transform.parent.position;
             newpos.y = newpos.y + 1;
             transform.position = newpos;
-
+            if(PlayerMovedUnit!=null)
+            {
+                PlayerMovedUnit(pos);
+            }
         }
     }
 
@@ -154,15 +170,24 @@ public class PlayerController : MonoBehaviour {
         {
             if (direction == 1)
             {
+                if (nextBlock.GetComponent<Configurer>().right == null)
+                    break;
+
                 nextBlock = nextBlock.GetComponent<Configurer>().right;
             }
             else if (direction == -1)
             {
+                if (nextBlock.GetComponent<Configurer>().left == null)
+                    break;
                 nextBlock = nextBlock.GetComponent<Configurer>().left;
             }
 
             Vector3 newpos = new Vector3(nextBlock.transform.parent.position.x, nextBlock.transform.parent.position.y + 1, nextBlock.transform.parent.position.z);
             transform.position = newpos;
+            if(PlayerMovedUnit != null)
+            {
+                PlayerMovedUnit(pos);
+            }
 
             if (nextBlock == finalBlock)
                 break;

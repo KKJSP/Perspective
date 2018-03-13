@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour {
 
     Vector3 pos;
 
-    GameObject mainCamera;
+    public static GameObject mainCamera;
 
     public delegate void VoidIntDelegate(int i);
     public delegate void VoidRayDelegate(Ray ray);

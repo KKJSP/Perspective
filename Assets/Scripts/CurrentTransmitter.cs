@@ -48,8 +48,6 @@ public class CurrentTransmitter : MonoBehaviour {
             offMat = rend.material;
         }
 
-
-
         //Finding Neighbours
         Vector3 camPosright = Vector3.zero;
         Vector3 camPosleft = Vector3.zero;
@@ -142,6 +140,11 @@ public class CurrentTransmitter : MonoBehaviour {
             left.GetComponent<CurrentTransmitter>().Configure();
         }
         Configure();
+    }
+
+    public void DeConfigure()
+    {
+        up = down = left = right = null;
     }
 
 

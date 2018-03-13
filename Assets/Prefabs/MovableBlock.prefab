@@ -194,7 +194,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1715884531967176}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: -2, z: 0}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4698725012510538}
@@ -504,7 +504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   largeAnim: 0
   maxDistanceDelta: 0.25
-  buttons: []
+  interactionScripts: []
   newPos: {x: -4, y: -2, z: 0}
 --- !u!114 &114531437602136826
 MonoBehaviour:

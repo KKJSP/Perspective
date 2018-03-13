@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InteractionScript : MonoBehaviour {
 
-    public GameObject[] Interactives;
 
     public delegate void VoidVoidDelegate();
     public VoidVoidDelegate ObjectTouch;
