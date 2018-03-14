@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CurrentTransmitter : MonoBehaviour {
 
+    public Vector3 transmitDir, recieveDir;
     public GameObject left, right, up, down;
     public Material onMat, offMat;
 
@@ -55,46 +56,75 @@ public class CurrentTransmitter : MonoBehaviour {
         Vector3 posright = transform.position;
         if (transform.localEulerAngles.y == 0)
         {
-            posright.x += 1;
-            posleft.x -= 1;
+            if (transmitDir.x == 1)
+                posright.x += 1;
+            else if (transmitDir.x == -1)
+                posleft.x -= 1;
+            else if (transmitDir.x != 0)
+            {
+                posright.x += 1;
+                posleft.x -= 1;
+            }
             camPosright = posright + new Vector3(0, 0, -20);
             camPosleft = posleft + new Vector3(0, 0, -20);
         }
         else if (transform.localEulerAngles.y == 270)
         {
-            posright.z += 1;
-            posleft.z -= 1;
+            if (transmitDir.z == 1)
+                posright.z += 1;
+            else if (transmitDir.z == -1)
+                posleft.z -= 1;
+            else if (transmitDir.z != 0)
+            {
+                posright.z += 1;
+                posleft.z -= 1;
+            }
             camPosright = posright + new Vector3(20, 0, 0);
             camPosleft = posleft + new Vector3(20, 0, 0);
         }
         else if (transform.localEulerAngles.y == 90)
         {
-            posright.z += -1;
-            posleft.z -= -1;
+            if (transmitDir.z == 1)
+                posleft.z += 1;
+            else if (transmitDir.z == -1)
+                posright.z -= 1;
+            else if (transmitDir.z != 0)
+            {
+                posright.z -= 1;
+                posleft.z += 1;
+            }
             camPosright = posright + new Vector3(-20, 0, 0);
             camPosleft = posleft + new Vector3(-20, 0, 0);
         }
         else if (transform.localEulerAngles.y == 180)
         {
-            posright.x += -1;
-            posleft.x -= -1;
+            if (transmitDir.x == 1)
+                posleft.x += 1;
+            else if (transmitDir.x == -1)
+                posright.x -= 1;
+            else if (transmitDir.x != 0)
+            {
+                posright.x -= 1;
+                posleft.x += 1;
+            }
             camPosright = posright + new Vector3(0, 0, 20);
             camPosleft = posleft + new Vector3(0, 0, 20);
         }
 
+
         Vector3 dir_right = posright - camPosright;
         Vector3 dir_left = posleft - camPosleft;
 
-        if (camPosleft != Vector3.zero && posleft != transform.position)
+        if (camPosleft != Vector3.zero)
         {
-            if (Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
+            if (Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer) && posright != transform.position)
             {
                 var hit = hitInfo;
                 camPosright.y += 1;
                 if (!Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
                     right = hit.transform.gameObject;
             }
-            if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
+            if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer) && posleft != transform.position)
             {
                 var hit = hitInfo;
                 camPosleft.y += 1;
@@ -106,7 +136,7 @@ public class CurrentTransmitter : MonoBehaviour {
             posup.y += 1;
             Vector3 camPosup = posup - dir_right;
 
-            if (Physics.Raycast(camPosup, dir_right, out hitInfo, maxRayDist, layer))
+            if (Physics.Raycast(camPosup, dir_right, out hitInfo, maxRayDist, layer) && (transmitDir.y == 1 || transmitDir.y != 0))
             {
                 up = hitInfo.transform.gameObject;
             }
@@ -114,7 +144,7 @@ public class CurrentTransmitter : MonoBehaviour {
             posup.y -= 2;
             camPosup = posup - dir_right;
 
-            if (Physics.Raycast(camPosup, dir_right, out hitInfo, maxRayDist, layer))
+            if (Physics.Raycast(camPosup, dir_right, out hitInfo, maxRayDist, layer) && (transmitDir.y == -1 || transmitDir.y != 0))
             {
                 down = hitInfo.transform.gameObject;
             }
@@ -150,6 +180,10 @@ public class CurrentTransmitter : MonoBehaviour {
 
     public void ChangeState(GameObject incoming)
     {
+        if (incoming.transform.position - transform.position != recieveDir && incoming.tag != "Switch")
+        {
+            return;
+        }
 
         if(coroutine!=null)
         {
