@@ -129,12 +129,16 @@ public class ButtonController : MonoBehaviour {
     {
 
 
-        if (tag == "ToggleButton" || tag == "PushButton")
+        if (tag == "ToggleButton")
         {
             front.GetComponent<CurrentTransmitter>().ChangeState(front.gameObject);
             back.GetComponent<CurrentTransmitter>().ChangeState(back.gameObject);
             left.GetComponent<CurrentTransmitter>().ChangeState(left.gameObject);
             right.GetComponent<CurrentTransmitter>().ChangeState(right.gameObject);
+        }
+        else if(tag == "PushButton")
+        {
+            GetComponent<InteractionScript>().ButtonSwitchTouch();
         }
 
         Vector3 scale = mesh.localScale;
@@ -152,10 +156,7 @@ public class ButtonController : MonoBehaviour {
     {
         if (tag == "PushButton")
         {
-            front.GetComponent<CurrentTransmitter>().ChangeState(front.gameObject);
-            back.GetComponent<CurrentTransmitter>().ChangeState(back.gameObject);
-            left.GetComponent<CurrentTransmitter>().ChangeState(left.gameObject);
-            right.GetComponent<CurrentTransmitter>().ChangeState(right.gameObject);
+            GetComponent<InteractionScript>().ButtonSwitchTouch();
         }
 
         Vector3 scale = mesh.localScale;
