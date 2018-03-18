@@ -9,6 +9,7 @@ TagManager:
   - MovableBlock
   - Current
   - Switch
+  - StairBlock
   layers:
   - Default
   - TransparentFX

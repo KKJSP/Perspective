@@ -11,6 +11,11 @@ public class Configurer : MonoBehaviour {
 
     RaycastHit hitInfo = new RaycastHit();
 
+    private void Awake()
+    {
+        left = right = null;
+    }
+
     // Use this for initialization
     void Start () {
         Configure();
@@ -23,7 +28,7 @@ public class Configurer : MonoBehaviour {
 
     public void Configure()
     {
-        left = right = null;
+
         layer = PlayerController.layer;
         maxRayDist = PlayerController.maxRayDist;
 
@@ -38,28 +43,28 @@ public class Configurer : MonoBehaviour {
         Vector3 camPosleft = Vector3.zero;
         Vector3 posleft = transform.position;
         Vector3 posright = transform.position;
-        if (transform.localEulerAngles.x == 0 && transform.localEulerAngles.y == 0)
-        {
+        if (transform.localEulerAngles.y == 0)
+        { 
             posright.x += 1;
             posleft.x -= 1;
             camPosright = posright + new Vector3(0, 0, -20);
             camPosleft = posleft + new Vector3(0, 0, -20);
         }
-        else if (transform.localEulerAngles.x == 0 && transform.localEulerAngles.y == 270)
+        else if (transform.localEulerAngles.y == 270)
         {
             posright.z += 1;
             posleft.z -= 1;
             camPosright = posright + new Vector3(20, 0, 0);
             camPosleft = posleft + new Vector3(20, 0, 0);
         }
-        else if (transform.localEulerAngles.x == 0 && transform.localEulerAngles.y == 90)
+        else if (transform.localEulerAngles.y == 90)
         {
             posright.z += -1;
             posleft.z -= -1;
             camPosright = posright + new Vector3(-20, 0, 0);
             camPosleft = posleft + new Vector3(-20, 0, 0);
         }
-        else if (transform.localEulerAngles.x == 0 && transform.localEulerAngles.y == 180)
+        else if (transform.localEulerAngles.y == 180)
         {
             posright.x += -1;
             posleft.x -= -1;
@@ -70,17 +75,18 @@ public class Configurer : MonoBehaviour {
         Vector3 dir_right = posright - camPosright;
         Vector3 dir_left = posleft - camPosleft;
 
-        if (camPosleft != Vector3.zero && posleft != transform.position)
-        {
-            if (Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
+        //if (camPosleft != Vector3.zero && camPosright != Vector3.zero) // Take this out if not required.
+        //{
+            if (Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer) && posright != transform.position)
             {
                 var hit = hitInfo;
                 camPosright.y += 1;
                 if (!Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
                     right = hit.transform.gameObject;
             }
-            if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
+            if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer) && posleft != transform.position )
             {
+
                 var hit = hitInfo;
                 camPosleft.y += 1;
                 if (!Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
@@ -93,10 +99,25 @@ public class Configurer : MonoBehaviour {
 
             if (Physics.Raycast(camPosup, dir_right, out hitInfo, maxRayDist, layer))
             {
+                if (hitInfo.transform.tag == "StairBlock")
+                {
+                    if (left != null && hitInfo.transform.name == "L2R")
+                    {
+                        left.GetComponent<Configurer>().right = hitInfo.transform.gameObject;
+                        hitInfo.transform.GetComponent<Configurer>().left = left;
+                    }
+                    if (right != null && hitInfo.transform.name == "R2L")
+                    {
+                        right.GetComponent<Configurer>().left = hitInfo.transform.gameObject;
+                        hitInfo.transform.GetComponent<Configurer>().right = right;
+                    }
+                }
+                                
                 left = null;
                 right = null;
+                
             }
-        }
+        //}
     }
 
     public void ReConfigure()
