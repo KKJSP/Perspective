@@ -103,10 +103,8 @@ public class ButtonController : MonoBehaviour {
         pos.y -= 0.1f;
         mesh.localScale = scale;
         mesh.position = pos;
-
-
-
     }
+
 
     void OnExit(Collider other)
     {
@@ -147,10 +145,9 @@ public class ButtonController : MonoBehaviour {
         pos.y -= 0.1f;
         mesh.localScale = scale;
         mesh.position = pos;
-
-
-
     }
+
+
 
     void OnTriggerExit(Collider other)
     {

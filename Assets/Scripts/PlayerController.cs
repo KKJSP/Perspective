@@ -200,4 +200,37 @@ public class PlayerController : MonoBehaviour {
 
     }
 
+    public static void ChangePlayerLayer(int value)
+    {
+        /*switch (value)
+        {
+            case 8:
+                {
+                    player.GetComponent<Renderer>().material = Settings.GetMaterialPlayerDefault();
+                    break;
+                }
+            case 12:
+                {
+                    player.GetComponent<Renderer>().material = Settings.GetMaterialYellow();
+                    break;
+                }
+            case 13:
+                {
+                    player.GetComponent<Renderer>().material = Settings.GetMaterialViolet();
+                    break;
+                }
+
+        }
+        */
+
+        if (value == 8)
+        {
+            layer = LayerMask.GetMask("PathBlock");
+        }
+        else
+        {
+            layer = LayerMask.GetMask("PathBlock", LayerMask.LayerToName(value));
+        }
+    }
+
 }

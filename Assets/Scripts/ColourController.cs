@@ -6,16 +6,23 @@ using UnityEngine;
 public class ColourController : MonoBehaviour {
 
     Material[] meshes = new Material[5];
+    int[] layers = new int[5];
 
+    GameObject front, back, left, right, top;
     Renderer frontRend, backRend, leftRend, rightRend, topRend;
 
     void GetMeshes()
     {
-        frontRend = transform.Find("Front").GetComponent<Renderer>();
-        backRend = transform.Find("Back").GetComponent<Renderer>();
-        leftRend = transform.Find("Left").GetComponent<Renderer>();
-        rightRend = transform.Find("Right").GetComponent<Renderer>();
-        topRend = transform.Find("Top").GetComponent<Renderer>();
+        front = transform.Find("Front").gameObject;
+        frontRend = front.GetComponent<Renderer>();
+        back = transform.Find("Back").gameObject;
+        backRend = back.GetComponent<Renderer>();
+        left = transform.Find("Left").gameObject;
+        leftRend = left.GetComponent<Renderer>();
+        right = transform.Find("Right").gameObject;
+        rightRend = right.GetComponent<Renderer>();
+        top = transform.Find("Top").gameObject;
+        topRend = top.GetComponent<Renderer>();
     }
 
     public void ApplyMaterials(int[] selectedindex)
@@ -28,12 +35,15 @@ public class ColourController : MonoBehaviour {
             {
                 case 0:
                     meshes[i] = Settings.GetMaterialBlack();
+                    layers[i] = LayerMask.NameToLayer("PathBlock");
                     break;
                 case 1:
                     meshes[i] = Settings.GetMaterialYellow();
+                    layers[i] = LayerMask.NameToLayer("YellowPath");
                     break;
                 case 2:
                     meshes[i] = Settings.GetMaterialViolet();
+                    layers[i] = LayerMask.NameToLayer("VioletPath");
                     break;
                 default:
                     Debug.LogError("Unrecognized Option");
@@ -42,10 +52,15 @@ public class ColourController : MonoBehaviour {
         }
 
         frontRend.material = meshes[0];
+        front.layer = layers[0];
         backRend.material = meshes[1];
+        back.layer = layers[1];
         rightRend.material = meshes[2];
+        right.layer = layers[2];
         leftRend.material = meshes[3];
+        left.layer = layers[3];
         topRend.material = meshes[4];
+        top.layer = layers[4];
         print("Applied Materials");
     }
 }
