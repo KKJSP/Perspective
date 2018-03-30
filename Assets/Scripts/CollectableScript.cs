@@ -44,7 +44,7 @@ public class CollectableScript : MonoBehaviour {
             {
                 SetParam(12);
             }
-            else if (GetComponent<Renderer>().material == violet)
+            else if (GetComponent<Renderer>().sharedMaterial == violet)
             {
                 SetParam(13);
             }
@@ -95,12 +95,10 @@ public class CollectableScript : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (Functions != null)
+        if (other.tag == "Player")
         {
-            Functions(parameter);
+            Collect();
         }
-
-        Destroy(gameObject);
     }
 
     public void SetParam(int value)
