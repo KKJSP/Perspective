@@ -29,7 +29,7 @@ public class Configurer : MonoBehaviour {
     public void Configure()
     {
 
-        layer = LayerMask.GetMask(LayerMask.LayerToName(gameObject.layer));
+        layer = LayerMask.GetMask("PathBlock","YellowPath","VioletPath");
         maxRayDist = PlayerController.maxRayDist;
 
         if (tag == "Current")

@@ -202,26 +202,26 @@ public class PlayerController : MonoBehaviour {
 
     public static void ChangePlayerLayer(int value)
     {
-        /*switch (value)
+        switch (value)
         {
             case 8:
                 {
-                    player.GetComponent<Renderer>().material = Settings.GetMaterialPlayerDefault();
+                    player.GetComponent<Renderer>().material = SettingsRuntime.GetDefaultPlayer();
                     break;
                 }
             case 12:
                 {
-                    player.GetComponent<Renderer>().material = Settings.GetMaterialYellow();
+                    player.GetComponent<Renderer>().material = SettingsRuntime.GetMaterialYellow();
                     break;
                 }
             case 13:
                 {
-                    player.GetComponent<Renderer>().material = Settings.GetMaterialViolet();
+                    player.GetComponent<Renderer>().material = SettingsRuntime.GetMaterialViolet();
                     break;
                 }
 
         }
-        */
+        
 
         if (value == 8)
         {

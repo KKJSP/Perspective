@@ -7,9 +7,10 @@ public class SettingsEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        Settings myScript = (Settings)target;
+
         DrawDefaultInspector();
 
-        Settings myScript = (Settings) target;
         if(GUILayout.Button("Save Changes"))
         {
             myScript.SaveChanges();

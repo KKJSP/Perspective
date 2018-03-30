@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 114652153462016710}
   - component: {fileID: 114374220705845836}
   - component: {fileID: 114811447479038004}
+  - component: {fileID: 114864665688968520}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -219,7 +220,22 @@ MonoBehaviour:
   materialBlack: {fileID: 2100000, guid: da41e940250d57446ad08dae4ed7aba7, type: 2}
   materialYellow: {fileID: 2100000, guid: 4b32f30082fc77a479407d92442bfb1a, type: 2}
   materialViolet: {fileID: 2100000, guid: 0e886aae31ab3124699451647616dda1, type: 2}
-  defaultPlayer: {fileID: 2100000, guid: 47b95717e30c2094ebb96d4e6c07e622, type: 2}
+--- !u!114 &114864665688968520
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1529487481746880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11caf5006c148ea4d9e23fcc69bf819b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Black: {fileID: 2100000, guid: da41e940250d57446ad08dae4ed7aba7, type: 2}
+  Yellow: {fileID: 2100000, guid: 4b32f30082fc77a479407d92442bfb1a, type: 2}
+  Violet: {fileID: 2100000, guid: 0e886aae31ab3124699451647616dda1, type: 2}
+  PlayerDefaultMaterial: {fileID: 2100000, guid: 47b95717e30c2094ebb96d4e6c07e622,
+    type: 2}
 --- !u!124 &124757833111514922
 Behaviour:
   m_ObjectHideFlags: 1
