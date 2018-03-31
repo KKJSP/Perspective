@@ -14,10 +14,13 @@ public class Configurer : MonoBehaviour {
     private void Awake()
     {
         left = right = null;
+        layer = LayerMask.GetMask("PathBlock", "YellowPath", "VioletPath");
+
     }
 
     // Use this for initialization
     void Start () {
+        maxRayDist = PlayerController.maxRayDist;
         Configure();
     }
 	
@@ -28,9 +31,6 @@ public class Configurer : MonoBehaviour {
 
     public void Configure()
     {
-
-        layer = LayerMask.GetMask("PathBlock","YellowPath","VioletPath");
-        maxRayDist = PlayerController.maxRayDist;
 
         if (tag == "Current")
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CurrentTransmitter : MonoBehaviour {
 
-    public Vector3 transmitDir, recieveDir;
+    public Vector2 transmitDir;
     public GameObject left, right, up, down;
     public Material onMat, offMat;
 
@@ -23,7 +23,13 @@ public class CurrentTransmitter : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        maxRayDist = PlayerController.maxRayDist;
+        layer = LayerMask.GetMask("Current", "Switch");
         Configure();
+        if(tag == "Switch")
+        {
+            transmitDir.Set(2, 2);
+        }
     }
 
     // Update is called once per frame
@@ -34,8 +40,6 @@ public class CurrentTransmitter : MonoBehaviour {
     public void Configure()
     {
         up = down = left = right = null;
-        maxRayDist = PlayerController.maxRayDist;
-        layer = LayerMask.GetMask("Current", "Switch");
 
         if (tag == "Current")
         {
@@ -70,11 +74,11 @@ public class CurrentTransmitter : MonoBehaviour {
         }
         else if (transform.localEulerAngles.y == 270)
         {
-            if (transmitDir.z == 1)
+            if (transmitDir.x == 1)
                 posright.z += 1;
-            else if (transmitDir.z == -1)
+            else if (transmitDir.x == -1)
                 posleft.z -= 1;
-            else if (transmitDir.z != 0)
+            else if (transmitDir.x != 0)
             {
                 posright.z += 1;
                 posleft.z -= 1;
@@ -84,11 +88,11 @@ public class CurrentTransmitter : MonoBehaviour {
         }
         else if (transform.localEulerAngles.y == 90)
         {
-            if (transmitDir.z == 1)
+            if (transmitDir.x == -1)
                 posleft.z += 1;
-            else if (transmitDir.z == -1)
+            else if (transmitDir.x == 1)
                 posright.z -= 1;
-            else if (transmitDir.z != 0)
+            else if (transmitDir.x != 0)
             {
                 posright.z -= 1;
                 posleft.z += 1;
@@ -98,9 +102,9 @@ public class CurrentTransmitter : MonoBehaviour {
         }
         else if (transform.localEulerAngles.y == 180)
         {
-            if (transmitDir.x == 1)
+            if (transmitDir.x == -1)
                 posleft.x += 1;
-            else if (transmitDir.x == -1)
+            else if (transmitDir.x == 1)
                 posright.x -= 1;
             else if (transmitDir.x != 0)
             {
@@ -119,17 +123,11 @@ public class CurrentTransmitter : MonoBehaviour {
         {
             if (Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer) && posright != transform.position)
             {
-                var hit = hitInfo;
-                camPosright.y += 1;
-                if (!Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
-                    right = hit.transform.gameObject;
+                right = hitInfo.transform.gameObject;
             }
             if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer) && posleft != transform.position)
             {
-                var hit = hitInfo;
-                camPosleft.y += 1;
-                if (!Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
-                    left = hit.transform.gameObject;
+                left = hitInfo.transform.gameObject;
             }
 
             Vector3 posup = transform.position;
@@ -180,8 +178,9 @@ public class CurrentTransmitter : MonoBehaviour {
 
     public void ChangeState(GameObject incoming)
     {
-        if (incoming.transform.position - transform.position != recieveDir && incoming.tag != "Switch")
+        if ((incoming != left && incoming != right && incoming != up && incoming != down) && incoming.tag != "Switch")
         {
+            print("gg");
             return;
         }
 
@@ -219,7 +218,7 @@ public class CurrentTransmitter : MonoBehaviour {
             yield return new WaitForSeconds(0.05f);
         }
 
-        //Trasmitting Current
+        //Transmitting Current
         if (right != null && right != incoming)
         {
             right.GetComponent<CurrentTransmitter>().ChangeState(gameObject);

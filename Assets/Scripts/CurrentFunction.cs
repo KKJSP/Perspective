@@ -27,9 +27,5 @@ public class CurrentFunction : MonoBehaviour {
     void CurrentEndFunctions()
     {
         GetComponent<InteractionScript>().ButtonSwitchTouch();
-        GetComponent<CurrentTransmitter>().right = null;
-        GetComponent<CurrentTransmitter>().left = null;
-        GetComponent<CurrentTransmitter>().up = null;
-        GetComponent<CurrentTransmitter>().down = null;
     }
 }
