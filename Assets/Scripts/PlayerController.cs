@@ -134,7 +134,13 @@ public class PlayerController : MonoBehaviour {
         }
         else if (quadHit.GetComponent<Configurer>().right != null)
         {
-            return CheckRight(quadHit.GetComponent<Configurer>().right);
+            var blockLayer = quadHit.GetComponent<Configurer>().right.layer;
+            if (blockLayer == 8 || (LayerMask.GetMask(LayerMask.LayerToName(blockLayer)) + LayerMask.GetMask("PathBlock") == layer))
+            {
+                return CheckRight(quadHit.GetComponent<Configurer>().right);
+            }
+            else
+                return null;
         }
         else
             return null;
@@ -149,7 +155,13 @@ public class PlayerController : MonoBehaviour {
         }
         else if (quadHit.GetComponent<Configurer>().left != null)
         {
-            return CheckLeft(quadHit.GetComponent<Configurer>().left);
+            var blockLayer = quadHit.GetComponent<Configurer>().left.layer;
+            if (blockLayer == 8 || (LayerMask.GetMask(LayerMask.LayerToName(blockLayer)) + LayerMask.GetMask("PathBlock") == layer))
+            {
+                return CheckLeft(quadHit.GetComponent<Configurer>().left);
+            }
+            else
+                return null;
         }
         else
             return null;
