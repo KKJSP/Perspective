@@ -13,6 +13,8 @@ public class InputManager : MonoBehaviour {
 
     Vector3 pos;
 
+    RaycastHit hitInfo = new RaycastHit();
+
     public static GameObject mainCamera;
 
     public delegate void VoidIntDelegate(int i);
@@ -135,18 +137,21 @@ public class InputManager : MonoBehaviour {
 
     IEnumerator SnapRotation(int toAngle)
     {
-        int rotDir = (int)Mathf.Sign(toAngle-angle);
-        while (Mathf.Abs(angle - toAngle) > 6)
+        if (CheckPerspective(toAngle))
         {
-            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 2*rotDir);
-            angle += 2*rotDir;
-            yield return null;
-        }
+            int rotDir = (int)Mathf.Sign(toAngle - angle);
+            while (Mathf.Abs(angle - toAngle) > 6)
+            {
+                mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 2 * rotDir);
+                angle += 2 * rotDir;
+                yield return null;
+            }
 
-        mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, toAngle - angle);
-        StartCoroutine(SwitchView("2D"));
-        angle = toAngle;
-        changeAngle = true;
+            mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, toAngle - angle);
+            StartCoroutine(SwitchView("2D"));
+            angle = toAngle;
+            changeAngle = true;
+        }
     }
 
     IEnumerator SwitchView(string view)
@@ -191,5 +196,51 @@ public class InputManager : MonoBehaviour {
         }
     }
 
+    bool CheckPerspective(int viewAngle)
+    {
+        int view;
+        int totalAngle = PlayerController.lookAngle + viewAngle;
+        view = (totalAngle / 90) % 4;
+        while (view < 0)
+        {
+            view += 4;
+        }
+
+        Vector3 position = PlayerController.player.transform.position;
+        Vector3 camPos = Vector3.zero;
+
+        //Setting Raycast Origin and Directions
+        if (view == 0)
+        {
+            camPos = position + new Vector3(0, 0, -20);
+        }
+        else if (view == 1)
+        {
+            camPos = position + new Vector3(-20, 0, 0);
+        }
+        else if (view == 3)
+        {
+            camPos = position + new Vector3(20, 0, 0);
+        }
+        else if (view == 2)
+        {
+            camPos = position + new Vector3(0, 0, 20);
+        }
+        Vector3 dir = position - camPos;
+
+
+        if (Physics.Raycast(camPos, dir, out hitInfo, PlayerController.maxRayDist))
+        {
+            if(hitInfo.transform.gameObject == PlayerController.player)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

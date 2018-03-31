@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public static int pos, prev_pos, layer;
+    public static int pos, prev_pos, layer, lookAngle;
     public static float maxRayDist = 100f;
     public static GameObject player;
-    int lookAngle;
+
 
     RaycastHit hitInfo = new RaycastHit();
 
