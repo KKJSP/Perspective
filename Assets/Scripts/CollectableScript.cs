@@ -6,7 +6,7 @@ public class CollectableScript : MonoBehaviour {
 
     int layer, parameter;
 
-    public Material black, ColourOne, ColourTwo;
+    Material black, ColourOne, ColourTwo;
     RaycastHit hitInfo = new RaycastHit();
 
     public delegate void VoidIntDelegate(int i);
@@ -32,6 +32,10 @@ public class CollectableScript : MonoBehaviour {
 
     void Start()
     {
+        black = SettingsRuntime.GetMaterialBlack();
+        ColourOne = SettingsRuntime.GetMaterialColourOne();
+        ColourTwo = SettingsRuntime.GetMaterialColourTwo();
+
         layer = LayerMask.GetMask(LayerMask.LayerToName(gameObject.layer));
 
         if (tag == "ColourPellet")
