@@ -9,6 +9,13 @@ public class Settings : MonoBehaviour {
 
     private static Material BlackAccess, ColourOneAccess, ColourTwoAccess;
 
+    private void Start()
+    {
+        BlackAccess = materialBlack;
+        ColourOneAccess = materialColourOne;
+        ColourTwoAccess = materialColourTwo;
+    }
+
     public void SaveChanges() {
         BlackAccess = materialBlack;
         ColourOneAccess = materialColourOne;

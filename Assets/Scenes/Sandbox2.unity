@@ -372,11 +372,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
-        type: 2}
-      propertyPath: interactionScripts.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4814213470451260, guid: f4ae0e807b1f6c247add11345d4ea827, type: 2}
       propertyPath: m_LocalPosition.x
       value: 3
@@ -408,21 +403,6 @@ Prefab:
     - target: {fileID: 4814213470451260, guid: f4ae0e807b1f6c247add11345d4ea827, type: 2}
       propertyPath: m_RootOrder
       value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
-        type: 2}
-      propertyPath: newPos.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
-        type: 2}
-      propertyPath: newPos.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
-        type: 2}
-      propertyPath: newPos.z
-      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 114524549213289574, guid: f4ae0e807b1f6c247add11345d4ea827,
         type: 2}
