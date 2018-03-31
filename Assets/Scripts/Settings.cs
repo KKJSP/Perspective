@@ -5,14 +5,14 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Settings : MonoBehaviour {
 
-    public Material materialBlack, materialYellow, materialViolet;
+    public Material materialBlack, materialColourOne, materialColourTwo;
 
-    private static Material BlackAccess, YellowAccess, VioletAccess;
+    private static Material BlackAccess, ColourOneAccess, ColourTwoAccess;
 
     public void SaveChanges() {
         BlackAccess = materialBlack;
-        YellowAccess = materialYellow;
-        VioletAccess = materialViolet;
+        ColourOneAccess = materialColourOne;
+        ColourTwoAccess = materialColourTwo;
         print("Saved");
     }
 
@@ -21,14 +21,14 @@ public class Settings : MonoBehaviour {
         return BlackAccess;
     }
 
-    public static Material GetMaterialYellow()
+    public static Material GetMaterialColourOne()
     {
-        return YellowAccess;
+        return ColourOneAccess;
     }
 
-    public static Material GetMaterialViolet()
+    public static Material GetMaterialColourTwo()
     {
-        return VioletAccess;
+        return ColourTwoAccess;
     }
 
 }

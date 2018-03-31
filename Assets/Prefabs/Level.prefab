@@ -218,8 +218,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialBlack: {fileID: 2100000, guid: da41e940250d57446ad08dae4ed7aba7, type: 2}
-  materialYellow: {fileID: 2100000, guid: 4b32f30082fc77a479407d92442bfb1a, type: 2}
-  materialViolet: {fileID: 2100000, guid: 0e886aae31ab3124699451647616dda1, type: 2}
+  materialColourOne: {fileID: 2100000, guid: 4b32f30082fc77a479407d92442bfb1a, type: 2}
+  materialColourTwo: {fileID: 2100000, guid: 0e886aae31ab3124699451647616dda1, type: 2}
 --- !u!114 &114864665688968520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -232,8 +232,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Black: {fileID: 2100000, guid: da41e940250d57446ad08dae4ed7aba7, type: 2}
-  Yellow: {fileID: 2100000, guid: 4b32f30082fc77a479407d92442bfb1a, type: 2}
-  Violet: {fileID: 2100000, guid: 0e886aae31ab3124699451647616dda1, type: 2}
+  ColourOne: {fileID: 2100000, guid: 4b32f30082fc77a479407d92442bfb1a, type: 2}
+  ColourTwo: {fileID: 2100000, guid: 0e886aae31ab3124699451647616dda1, type: 2}
   PlayerDefaultMaterial: {fileID: 2100000, guid: 47b95717e30c2094ebb96d4e6c07e622,
     type: 2}
 --- !u!124 &124757833111514922

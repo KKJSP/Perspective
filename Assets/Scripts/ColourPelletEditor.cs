@@ -9,7 +9,7 @@ public class ColourPelletEditor : Editor
 
     string[] options = new string[]
     {
-        "Black", "Yellow", "Violet",
+        "Black", "ColourOne", "ColourTwo",
     };
 
 

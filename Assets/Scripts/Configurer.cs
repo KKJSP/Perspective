@@ -14,7 +14,7 @@ public class Configurer : MonoBehaviour {
     private void Awake()
     {
         left = right = null;
-        layer = LayerMask.GetMask("PathBlock", "YellowPath", "VioletPath");
+        layer = LayerMask.GetMask("PathBlock", "ColourOnePath", "ColourTwoPath");
 
     }
 

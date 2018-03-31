@@ -9,7 +9,7 @@ public class ColourControllerEditor : Editor
 
     string[] options = new string[]
     {
-        "Black", "Yellow", "Violet",
+        "Black", "ColourOne", "ColourTwo",
     };
 
 

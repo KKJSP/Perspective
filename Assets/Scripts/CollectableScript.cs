@@ -6,7 +6,7 @@ public class CollectableScript : MonoBehaviour {
 
     int layer, parameter;
 
-    public Material black, yellow, violet;
+    public Material black, ColourOne, ColourTwo;
     RaycastHit hitInfo = new RaycastHit();
 
     public delegate void VoidIntDelegate(int i);
@@ -40,11 +40,11 @@ public class CollectableScript : MonoBehaviour {
             {
                 SetParam(8);
             }
-            else if (GetComponent<Renderer>().sharedMaterial == yellow)
+            else if (GetComponent<Renderer>().sharedMaterial == ColourOne)
             {
                 SetParam(12);
             }
-            else if (GetComponent<Renderer>().sharedMaterial == violet)
+            else if (GetComponent<Renderer>().sharedMaterial == ColourTwo)
             {
                 SetParam(13);
             }

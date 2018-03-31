@@ -14,16 +14,16 @@ public class ColourPellet : MonoBehaviour {
                 GetComponent<Renderer>().material = Settings.GetMaterialBlack();
                 break;
             case 1:
-                GetComponent<Renderer>().material = Settings.GetMaterialYellow();
+                GetComponent<Renderer>().material = Settings.GetMaterialColourOne();
                 break;
             case 2:
-                GetComponent<Renderer>().material = Settings.GetMaterialViolet();
+                GetComponent<Renderer>().material = Settings.GetMaterialColourTwo();
                 break;
             default:
                 Debug.LogError("Unrecognized Option");
                 break;
         }
-        print("Applied Materials");
+        print("Saved Colour");
     }
     
 }

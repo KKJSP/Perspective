@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class SettingsRuntime : MonoBehaviour {
 
-    public Material Black, Yellow, Violet, PlayerDefaultMaterial;
-    private static Material BlackAccess, YellowAccess, VioletAccess, DefaultPlayer;
+    public Material Black, ColourOne, ColourTwo, PlayerDefaultMaterial;
+    private static Material BlackAccess, ColourOneAccess, ColourTwoAccess, DefaultPlayer;
 
     private void Start()
     {
         BlackAccess = Black;
-        YellowAccess = Yellow;
-        VioletAccess = Violet;
+        ColourOneAccess = ColourOne;
+        ColourTwoAccess = ColourTwo;
         DefaultPlayer = PlayerDefaultMaterial;
     }
 
@@ -20,14 +20,14 @@ public class SettingsRuntime : MonoBehaviour {
         return BlackAccess;
     }
 
-    public static Material GetMaterialYellow()
+    public static Material GetMaterialColourOne()
     {
-        return YellowAccess;
+        return ColourOneAccess;
     }
 
-    public static Material GetMaterialViolet()
+    public static Material GetMaterialColourTwo()
     {
-        return VioletAccess;
+        return ColourTwoAccess;
     }
 
     public static Material GetDefaultPlayer()

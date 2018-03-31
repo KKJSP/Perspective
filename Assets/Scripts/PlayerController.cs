@@ -223,12 +223,12 @@ public class PlayerController : MonoBehaviour {
                 }
             case 12:
                 {
-                    player.GetComponent<Renderer>().material = SettingsRuntime.GetMaterialYellow();
+                    player.GetComponent<Renderer>().material = SettingsRuntime.GetMaterialColourOne();
                     break;
                 }
             case 13:
                 {
-                    player.GetComponent<Renderer>().material = SettingsRuntime.GetMaterialViolet();
+                    player.GetComponent<Renderer>().material = SettingsRuntime.GetMaterialColourTwo();
                     break;
                 }
 

@@ -38,12 +38,12 @@ public class ColourController : MonoBehaviour {
                     layers[i] = LayerMask.NameToLayer("PathBlock");
                     break;
                 case 1:
-                    meshes[i] = Settings.GetMaterialYellow();
-                    layers[i] = LayerMask.NameToLayer("YellowPath");
+                    meshes[i] = Settings.GetMaterialColourOne();
+                    layers[i] = LayerMask.NameToLayer("ColourOnePath");
                     break;
                 case 2:
-                    meshes[i] = Settings.GetMaterialViolet();
-                    layers[i] = LayerMask.NameToLayer("VioletPath");
+                    meshes[i] = Settings.GetMaterialColourTwo();
+                    layers[i] = LayerMask.NameToLayer("ColourTwoPath");
                     break;
                 default:
                     Debug.LogError("Unrecognized Option");
