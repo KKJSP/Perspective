@@ -11,6 +11,8 @@ TagManager:
   - Switch
   - StairBlock
   - ColourPellet
+  - StairClass
+  - Portal
   layers:
   - Default
   - TransparentFX
