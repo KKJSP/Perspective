@@ -13,6 +13,7 @@ TagManager:
   - ColourPellet
   - StairClass
   - Portal
+  - SpecialBlock
   layers:
   - Default
   - TransparentFX

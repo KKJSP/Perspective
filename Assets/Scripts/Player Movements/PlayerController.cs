@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     GameObject nextBlock;
 
     public delegate void VoidIntDelegate(int i);
-    public static VoidIntDelegate PlayerMovedUnit;
+    public static VoidIntDelegate PlayerMovedUnit, PlayerChangedLayer;
 
     IEnumerator coroutine;
 
@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour {
         else if (quadHit.GetComponent<Configurer>().right != null)
         {
             var blockLayer = quadHit.GetComponent<Configurer>().right.layer;
-            if (blockLayer == 8 || (LayerMask.GetMask(LayerMask.LayerToName(blockLayer)) + LayerMask.GetMask("PathBlock") == layer))
+            if ((LayerMask.GetMask(LayerMask.LayerToName(blockLayer))) == layer)
             {
                 return CheckRight(quadHit.GetComponent<Configurer>().right);
             }
@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour {
         else if (quadHit.GetComponent<Configurer>().left != null)
         {
             var blockLayer = quadHit.GetComponent<Configurer>().left.layer;
-            if (blockLayer == 8 || (LayerMask.GetMask(LayerMask.LayerToName(blockLayer)) + LayerMask.GetMask("PathBlock") == layer))
+            if ((LayerMask.GetMask(LayerMask.LayerToName(blockLayer))) == layer)
             {
                 return CheckLeft(quadHit.GetComponent<Configurer>().left);
             }
@@ -260,15 +260,13 @@ public class PlayerController : MonoBehaviour {
 
         }
         
+        layer = LayerMask.GetMask(LayerMask.LayerToName(value));
 
-        if (value == 8)
+        if(PlayerChangedLayer != null)
         {
-            layer = LayerMask.GetMask("PathBlock");
+            PlayerChangedLayer(value);
         }
-        else
-        {
-            layer = LayerMask.GetMask("PathBlock", LayerMask.LayerToName(value));
-        }
+        
     }
 
     public static void TeleportPlayer(int value)

@@ -48,8 +48,6 @@ public class CollectableScript : MonoBehaviour {
 
         if (tag == "ColourPellet")
         {
-            print(ColourTwo);
-            print(GetComponent<Renderer>().sharedMaterial);
             if (GetComponent<Renderer>().sharedMaterial == black)
             {
                 SetParam(8);
@@ -100,7 +98,6 @@ public class CollectableScript : MonoBehaviour {
     {
         if (Functions != null)
         {
-            print(parameter);
             Functions(parameter);
         }
 
