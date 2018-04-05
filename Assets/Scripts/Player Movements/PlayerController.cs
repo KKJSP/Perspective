@@ -113,7 +113,10 @@ public class PlayerController : MonoBehaviour {
             else
             {
                 StopCoroutine(Fall());
-                StartCoroutine(Fall());
+                if (InputManager.canFall)
+                {
+                    StartCoroutine(Fall());
+                }
                 return;
             }
 
@@ -134,7 +137,10 @@ public class PlayerController : MonoBehaviour {
         else
         {
             StopCoroutine(Fall());
-            StartCoroutine(Fall());
+            if (InputManager.canFall)
+            {
+                StartCoroutine(Fall());
+            }
             return;
         }
     }

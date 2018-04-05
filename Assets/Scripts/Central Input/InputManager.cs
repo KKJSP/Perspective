@@ -5,7 +5,7 @@ using UnityEngine;
 public class InputManager : MonoBehaviour {
 
     static float camRotationSpeed, deltaPos, maxDistanceDelta = 0.1f;
-    public static bool lock3D = false, canDrag = true, canMove = true;
+    public static bool lock3D = false, canDrag = true, canMove = true, canFall = true;
 
     bool changeAngle;
 
@@ -76,6 +76,7 @@ public class InputManager : MonoBehaviour {
                 finalAngle = finalAngle * 90;
                 StartCoroutine(SnapRotation(finalAngle));    // Fixing Camera After Input End
                 drag = false;
+                canFall = true;
             }
         }
 
@@ -119,6 +120,7 @@ public class InputManager : MonoBehaviour {
     {
         if (!lock3D)
         {
+            canFall = false;
             deltaPos = Input.GetAxis("Mouse X");
             if (changeAngle)
             {
