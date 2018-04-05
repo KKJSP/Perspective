@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public static int pos, prev_pos, layer, lookAngle;
+    public float secondsFall;
+
+    public static int pos, prev_pos, layer, lookAngle, allLayer;
     public static float maxRayDist = 100f;
     public static GameObject player;
 
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     {
         layer = LayerMask.GetMask("PathBlock");
         player = gameObject;
+        allLayer = LayerMask.GetMask("PathBlock", "ColourOnePath", "ColourTwoPath","Base");
     }
 
 
@@ -90,28 +93,49 @@ public class PlayerController : MonoBehaviour {
         }
         Vector3 dir = position - camPos;
 
-        if (Physics.Raycast(camPos, dir, out hitInfo, maxRayDist, layer))
+        if (Physics.Raycast(camPos, dir, out hitInfo, maxRayDist, allLayer))
         {
-            Vector3 newpos = hitInfo.collider.gameObject.transform.parent.position;
-            newpos.y = newpos.y + 1;
-            transform.position = newpos;
-            if(PlayerMovedUnit!=null)
+            if (LayerMask.GetMask(LayerMask.LayerToName(hitInfo.transform.gameObject.layer)) == layer)
             {
-                PlayerMovedUnit(pos);
+                Vector3 newpos = hitInfo.collider.gameObject.transform.parent.position;
+                newpos.y = newpos.y + 1;
+                transform.position = newpos;
+                if (PlayerMovedUnit != null)
+                {
+                    PlayerMovedUnit(pos);
+                }
+            }
+            else if(hitInfo.transform.gameObject.layer == 15)
+            {
+                BreakPlayer();
+                return;
+            }
+            else
+            {
+                StopCoroutine(Fall());
+                StartCoroutine(Fall());
+                return;
+            }
+
+            GameObject landing = hitInfo.collider.gameObject;
+
+            if (landing.transform.parent.tag == "StairClass" && landing.tag != "StairBlock")
+            {
+                int temp = landing.layer;
+                landing.transform.parent.Find("Steps").gameObject.layer = 0;
+                landing.transform.parent.Find("Flat").gameObject.layer = 0;
+                prev_pos = -1;
+                MovePlayer(0);
+                landing.transform.parent.Find("Steps").gameObject.layer = temp;
+                landing.transform.parent.Find("Flat").gameObject.layer = temp;
             }
         }
 
-        GameObject landing = hitInfo.collider.gameObject;
-
-        if (landing.transform.parent.tag == "StairClass" && landing.tag != "StairBlock")
+        else
         {
-            int temp = landing.layer;
-            landing.transform.parent.Find("Steps").gameObject.layer = 0;
-            landing.transform.parent.Find("Flat").gameObject.layer = 0;
-            prev_pos = -1;
-            MovePlayer(0);
-            landing.transform.parent.Find("Steps").gameObject.layer = temp;
-            landing.transform.parent.Find("Flat").gameObject.layer = temp;
+            StopCoroutine(Fall());
+            StartCoroutine(Fall());
+            return;
         }
     }
 
@@ -273,7 +297,32 @@ public class PlayerController : MonoBehaviour {
     {
         //Code for teleport animation
 
-        Destroy(player);
+        player.SetActive(false);
     }
+
+    public static void BreakPlayer()
+    {
+        //Code for shattering animation
+
+        player.SetActive(false);
+    }
+
+    IEnumerator Fall()
+    {
+        //Make player fall
+        Vector3 newpos = transform.position;
+        newpos.y -= 1;
+        transform.position = newpos;
+        if (PlayerMovedUnit != null)
+        {
+            PlayerMovedUnit(pos);
+        }
+
+        yield return new WaitForSeconds(secondsFall);    //Wait some seconds
+
+        prev_pos = -1;
+        MovePlayer(0);
+    }
+
 
 }
