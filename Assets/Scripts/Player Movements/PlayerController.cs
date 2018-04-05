@@ -143,6 +143,7 @@ public class PlayerController : MonoBehaviour {
             }
             return;
         }
+
     }
 
     //Checking If path exists
@@ -330,5 +331,38 @@ public class PlayerController : MonoBehaviour {
         MovePlayer(0);
     }
 
+    public static void CheckPlayerDeath()
+    {
+        Vector3 position = player.transform.position;
+        Vector3 camPos = Vector3.zero;
+        RaycastHit hitInfo = new RaycastHit();
+
+        //Setting Raycast Origin and Directions
+        if (pos == 0)
+        {
+            camPos = position + new Vector3(0, 0, -20);
+        }
+        else if (pos == 1)
+        {
+            camPos = position + new Vector3(-20, 0, 0);
+        }
+        else if (pos == 3)
+        {
+            camPos = position + new Vector3(20, 0, 0);
+        }
+        else if (pos == 2)
+        {
+            camPos = position + new Vector3(0, 0, 20);
+        }
+        Vector3 dir = position - camPos;
+
+        if (Physics.Raycast(camPos, dir, out hitInfo, maxRayDist, layer))
+        {
+            if (LayerMask.GetMask(LayerMask.LayerToName(hitInfo.transform.gameObject.layer)) == layer)
+            {
+                player.SetActive(false);
+            }
+        }
+    }
 
 }

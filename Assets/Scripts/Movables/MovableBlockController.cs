@@ -103,11 +103,9 @@ public class MovableBlockController : MonoBehaviour {
                 transform.Find("Back").GetComponent<Configurer>().ReConfigure();
                 transform.Find("Left").GetComponent<Configurer>().ReConfigure();
                 transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+                ConfigCurrents();
             }
-            else if (tag == "Current")
-            {
-                GetComponent<CurrentTransmitter>().ReConfigure();
-            }
+            PlayerController.CheckPlayerDeath();
 
 
             yield return new WaitForSeconds(0.01f);
@@ -127,11 +125,9 @@ public class MovableBlockController : MonoBehaviour {
             transform.Find("Back").GetComponent<Configurer>().ReConfigure();
             transform.Find("Left").GetComponent<Configurer>().ReConfigure();
             transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+            ConfigCurrents();
         }
-        else if (tag == "Current")
-        {
-            GetComponent<CurrentTransmitter>().ReConfigure();
-        }
+        PlayerController.CheckPlayerDeath();
 
     }
 
@@ -140,5 +136,15 @@ public class MovableBlockController : MonoBehaviour {
         objectAbove = value;
     }
 
+    void ConfigCurrents()
+    {
+        foreach(Transform child in transform)
+        {
+            if(child.tag == "Current")
+            {
+                child.GetComponent<CurrentTransmitter>().ReConfigure();
+            }
+        }
+    }
 
 }

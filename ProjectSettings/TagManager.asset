@@ -14,6 +14,7 @@ TagManager:
   - StairClass
   - Portal
   - SpecialBlock
+  - PushableBlock
   layers:
   - Default
   - TransparentFX
