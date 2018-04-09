@@ -45,28 +45,28 @@ public class Configurer : MonoBehaviour {
         Vector3 camPosleft = Vector3.zero;
         Vector3 posleft = transform.position;
         Vector3 posright = transform.position;
-        if (transform.localEulerAngles.y == 0)
+        if ((transform.parent.localEulerAngles.y + transform.localEulerAngles.y) % 360 == 0)
         { 
             posright.x += 1;
             posleft.x -= 1;
             camPosright = posright + new Vector3(0, 0, -20);
             camPosleft = posleft + new Vector3(0, 0, -20);
         }
-        else if (transform.localEulerAngles.y == 270)
+        else if ((transform.parent.localEulerAngles.y + transform.localEulerAngles.y) % 360 == 270)
         {
             posright.z += 1;
             posleft.z -= 1;
             camPosright = posright + new Vector3(20, 0, 0);
             camPosleft = posleft + new Vector3(20, 0, 0);
         }
-        else if (transform.localEulerAngles.y == 90)
+        else if ((transform.parent.localEulerAngles.y + transform.localEulerAngles.y) % 360 == 90)
         {
             posright.z += -1;
             posleft.z -= -1;
             camPosright = posright + new Vector3(-20, 0, 0);
             camPosleft = posleft + new Vector3(-20, 0, 0);
         }
-        else if (transform.localEulerAngles.y == 180)
+        else if ((transform.parent.localEulerAngles.y + transform.localEulerAngles.y) % 360 == 180)
         {
             posright.x += -1;
             posleft.x -= -1;

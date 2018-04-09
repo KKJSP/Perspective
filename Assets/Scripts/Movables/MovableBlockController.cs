@@ -8,15 +8,18 @@ public class MovableBlockController : MonoBehaviour {
     public bool largeAnim = false;
 
     public float maxDistanceDelta = 0.001f;
+    public float maxRotationDelta = 1f;
 
     GameObject mainCamera, objectAbove;
 
     public InteractionScript[] interactionScripts;
 
     public Vector3 newPos;
+    public int newRotY;
     Vector3 oldPos;
+    float rotateBy;
 
-    IEnumerator coroutine;
+    IEnumerator coroutine1, coroutine2;
 
     private void Awake()
     {
@@ -26,6 +29,7 @@ public class MovableBlockController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         oldPos = transform.position;
+        rotateBy = newRotY - transform.localEulerAngles.y; 
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
@@ -59,20 +63,28 @@ public class MovableBlockController : MonoBehaviour {
         transform.Find("Right").GetComponent<Configurer>().SetMover(true);
         transform.Find("Left").GetComponent<Configurer>().SetMover(true);
 
-        if (coroutine != null)
+        if (coroutine1 != null)
         {
-            StopCoroutine(coroutine);
+            StopCoroutine(coroutine1);
+        }
+        if (coroutine2 != null)
+        {
+            StopCoroutine(coroutine2);
         }
         if (!isMoved)
         {
-            coroutine = MoveBlock(newPos);
-            StartCoroutine(coroutine);
+            coroutine1 = MoveBlock(newPos);
+            coroutine2 = RotateBlock(rotateBy);
+            StartCoroutine(coroutine1);
+            StartCoroutine(coroutine2);
             isMoved = true;
         }
         else if (isMoved)
         {
-            coroutine = MoveBlock(oldPos);
-            StartCoroutine(coroutine);
+            coroutine1 = MoveBlock(oldPos);
+            coroutine2 = RotateBlock(-rotateBy);
+            StartCoroutine(coroutine1);
+            StartCoroutine(coroutine2);
             isMoved = false;
         }
     }
@@ -156,6 +168,29 @@ public class MovableBlockController : MonoBehaviour {
 
 
     }
+
+
+    IEnumerator RotateBlock(float angle)
+    {
+        int rotDir = (int)Mathf.Sign(angle);
+        while (Mathf.Abs(angle) > 5)
+        {
+            transform.Rotate(0f, maxRotationDelta*rotDir, 0f);
+            angle -= maxRotationDelta * rotDir;
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        transform.Rotate(0f, angle, 0f);
+        if (tag == "MovableBlock")
+        {
+            transform.Find("Front").GetComponent<Configurer>().ReConfigure(2);
+            transform.Find("Back").GetComponent<Configurer>().ReConfigure(2);
+            transform.Find("Left").GetComponent<Configurer>().ReConfigure(2);
+            transform.Find("Right").GetComponent<Configurer>().ReConfigure(2);
+            ConfigCurrents();
+        }
+    }
+
 
     public void SetObjectAbove(GameObject value)
     {
