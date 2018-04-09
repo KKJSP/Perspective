@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovableBlockController : MonoBehaviour {
 
-    bool isMoved = false;
+    bool isMoved = false, firstTime = false;
     public bool largeAnim = false;
 
     public float maxDistanceDelta = 0.001f;
@@ -20,7 +20,7 @@ public class MovableBlockController : MonoBehaviour {
 
     private void Awake()
     {
-        
+        objectAbove = null;
     }
 
     // Use this for initialization
@@ -54,6 +54,11 @@ public class MovableBlockController : MonoBehaviour {
 
     void MoveToNew()
     {
+        transform.Find("Front").GetComponent<Configurer>().SetMover(true);
+        transform.Find("Back").GetComponent<Configurer>().SetMover(true);
+        transform.Find("Right").GetComponent<Configurer>().SetMover(true);
+        transform.Find("Left").GetComponent<Configurer>().SetMover(true);
+
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
@@ -74,7 +79,20 @@ public class MovableBlockController : MonoBehaviour {
 
     IEnumerator MoveBlock(Vector3 target)
     {
+        transform.Find("DetectObject").GetComponent<DetectObjects>().CheckFirst();
+        bool gotIt = false; 
+        gotIt = transform.Find("DetectObject").GetComponent<DetectObjects>().CheckObject(gotIt);
+
         Vector3 targetAbove = target;
+        if (objectAbove != null)
+        {
+            targetAbove.y += 1;
+            print(targetAbove);
+        }
+        else
+        {
+            firstTime = true;
+        }
 
         if (largeAnim)
         {
@@ -83,32 +101,40 @@ public class MovableBlockController : MonoBehaviour {
             InputManager.lock3D = true;
             InputManager.canMove = false;
         }
-
-        if (objectAbove != null)
-        {
-            targetAbove.y += objectAbove.transform.position.y - transform.position.y;
-        }
-
+        
         while (transform.position != target)
         {
-            if(objectAbove != null)
+            gotIt = transform.Find("DetectObject").GetComponent<DetectObjects>().CheckObject(gotIt);
+
+            if (objectAbove != null)
             {
+                if (firstTime)
+                {
+                    targetAbove.y += 1;
+                    firstTime = false;
+                }
                 objectAbove.transform.position = Vector3.MoveTowards(objectAbove.transform.position, targetAbove, maxDistanceDelta);
+                //PlayerController.PlayerMovedUnit(PlayerController.pos);
             }
             transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
 
             if (tag == "MovableBlock")
             {
-                transform.Find("Front").GetComponent<Configurer>().ReConfigure();
-                transform.Find("Back").GetComponent<Configurer>().ReConfigure();
-                transform.Find("Left").GetComponent<Configurer>().ReConfigure();
-                transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+                transform.Find("Front").GetComponent<Configurer>().ReConfigure(2);
+                transform.Find("Back").GetComponent<Configurer>().ReConfigure(2);
+                transform.Find("Left").GetComponent<Configurer>().ReConfigure(2);
+                transform.Find("Right").GetComponent<Configurer>().ReConfigure(2);
                 ConfigCurrents();
             }
             PlayerController.CheckPlayerDeath();
-
+            //PlayerController.PlayerMovedUnit(PlayerController.pos);
 
             yield return new WaitForSeconds(0.01f);
+        }
+        if (objectAbove != null)
+        {
+            objectAbove.transform.position = targetAbove;
+            objectAbove = null;
         }
 
         if (largeAnim)
@@ -121,13 +147,13 @@ public class MovableBlockController : MonoBehaviour {
 
         if (tag == "MovableBlock")
         {
-            transform.Find("Front").GetComponent<Configurer>().ReConfigure();
-            transform.Find("Back").GetComponent<Configurer>().ReConfigure();
-            transform.Find("Left").GetComponent<Configurer>().ReConfigure();
-            transform.Find("Right").GetComponent<Configurer>().ReConfigure();
+            transform.Find("Front").GetComponent<Configurer>().ReConfigure(2);
+            transform.Find("Back").GetComponent<Configurer>().ReConfigure(2);
+            transform.Find("Left").GetComponent<Configurer>().ReConfigure(2);
+            transform.Find("Right").GetComponent<Configurer>().ReConfigure(2);
             ConfigCurrents();
         }
-        PlayerController.CheckPlayerDeath();
+
 
     }
 

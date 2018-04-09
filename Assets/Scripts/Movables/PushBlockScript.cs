@@ -9,7 +9,6 @@ public class PushBlockScript : MonoBehaviour {
     int direction;
 
     GameObject blockBelow;
-    GameObject player = PlayerController.player;
 
 	// Use this for initialization
 	void Start () {

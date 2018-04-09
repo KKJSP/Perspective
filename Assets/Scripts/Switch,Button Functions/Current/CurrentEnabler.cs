@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class CurrentEnabler : MonoBehaviour {
 
-    int pos, prev_pos, lookAngle;
+    public static int pos, prev_pos, lookAngle;
 
-    GameObject[] currents, switches;
+    public static GameObject[] currents, switches;
+
+    /*
 
     private void OnEnable()
     {
@@ -17,6 +19,8 @@ public class CurrentEnabler : MonoBehaviour {
     {
         InputManager.Snapped -= EnableCurrents;
     }
+
+    */
 
     // Use this for initialization
     void Start () {
@@ -32,7 +36,7 @@ public class CurrentEnabler : MonoBehaviour {
 		
 	}
 
-    void EnableCurrents(int toAngle)
+    public static void EnableCurrents(int toAngle)
     {
         lookAngle += toAngle;
         pos = (lookAngle / 90) % 4;

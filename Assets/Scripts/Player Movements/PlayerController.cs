@@ -95,6 +95,11 @@ public class PlayerController : MonoBehaviour {
 
         if (Physics.Raycast(camPos, dir, out hitInfo, maxRayDist, allLayer))
         {
+            Vector3 tempPos = new Vector3(-1, -1, -1);
+            if (hitInfo.transform.gameObject.layer != 15)
+            {
+                tempPos = hitInfo.collider.gameObject.transform.parent.position;
+            }
             if (LayerMask.GetMask(LayerMask.LayerToName(hitInfo.transform.gameObject.layer)) == layer)
             {
                 Vector3 newpos = hitInfo.collider.gameObject.transform.parent.position;
@@ -113,6 +118,11 @@ public class PlayerController : MonoBehaviour {
             else
             {
                 StopCoroutine(Fall());
+                if (tempPos.x != -1)
+                {
+                    tempPos.y = tempPos.y + 1;
+                    transform.position = tempPos;
+                }
                 if (InputManager.canFall)
                 {
                     StartCoroutine(Fall());

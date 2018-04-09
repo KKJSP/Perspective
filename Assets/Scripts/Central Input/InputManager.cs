@@ -209,6 +209,7 @@ public class InputManager : MonoBehaviour {
 
         if (Snapped != null && view == "2D")
         {
+            CurrentEnabler.EnableCurrents(Mathf.RoundToInt(angle));
             Snapped(Mathf.RoundToInt(angle));
             angle = 0;
             canMove = true;

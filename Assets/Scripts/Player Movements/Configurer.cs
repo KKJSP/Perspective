@@ -6,6 +6,7 @@ public class Configurer : MonoBehaviour {
 
     public GameObject left, right;
 
+    bool mover = false;
     int layer;
     float maxRayDist;
 
@@ -17,6 +18,7 @@ public class Configurer : MonoBehaviour {
         layer = LayerMask.GetMask("PathBlock", "ColourOnePath", "ColourTwoPath");
 
     }
+
 
     // Use this for initialization
     void Start () {
@@ -83,7 +85,11 @@ public class Configurer : MonoBehaviour {
                 camPosright.y += 1;
                 if (!Physics.Raycast(camPosright, dir_right, out hitInfo, maxRayDist, layer))
                     right = hit.transform.gameObject;
+                else if(mover)
+                    right = null;
             }
+            else if (mover)
+                right = null;
             if (Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer) && posleft != transform.position )
             {
 
@@ -91,9 +97,13 @@ public class Configurer : MonoBehaviour {
                 camPosleft.y += 1;
                 if (!Physics.Raycast(camPosleft, dir_left, out hitInfo, maxRayDist, layer))
                     left = hit.transform.gameObject;
+                else if (mover)
+                    left = null;
             }
+            else if (mover)
+                left = null;
 
-            Vector3 posup = transform.position;
+        Vector3 posup = transform.position;
             posup.y += 1;
             Vector3 camPosup = posup - dir_right;
 
@@ -120,17 +130,62 @@ public class Configurer : MonoBehaviour {
         //}
     }
 
-    public void ReConfigure()
+    public void ReConfigure(int level)
     {
-        if (right != null)
+        level--;
+        if (level > 0)
         {
-            right.GetComponent<Configurer>().Configure();
+            if (right != null)
+            {
+                right.GetComponent<Configurer>().SetMover(true);
+                right.GetComponent<Configurer>().ReConfigure(level);
+            }
+            if (left != null)
+            {
+                left.GetComponent<Configurer>().SetMover(true);
+                left.GetComponent<Configurer>().ReConfigure(level);
+            }
+            Configure();
+            if (right != null)
+            {
+                right.GetComponent<Configurer>().SetMover(true);
+                right.GetComponent<Configurer>().ReConfigure(level);
+            }
+            if (left != null)
+            {
+                left.GetComponent<Configurer>().SetMover(true);
+                left.GetComponent<Configurer>().ReConfigure(level);
+            }
         }
-        if (left != null)
+        else
         {
-            left.GetComponent<Configurer>().Configure();
+            if (right != null)
+            {
+                right.GetComponent<Configurer>().SetMover(true);
+                right.GetComponent<Configurer>().Configure();
+            }
+            if (left != null)
+            {
+                left.GetComponent<Configurer>().SetMover(true);
+                left.GetComponent<Configurer>().Configure();
+            }
+            Configure();
+            if (right != null)
+            {
+                right.GetComponent<Configurer>().SetMover(true);
+                right.GetComponent<Configurer>().Configure();
+            }
+            if (left != null)
+            {
+                left.GetComponent<Configurer>().SetMover(true);
+                left.GetComponent<Configurer>().Configure();
+            }
         }
-        Configure();
+    }
+
+    public void SetMover(bool value)
+    {
+        mover = value;
     }
 
 }

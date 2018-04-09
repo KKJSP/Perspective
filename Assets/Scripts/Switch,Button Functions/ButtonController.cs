@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ButtonController : MonoBehaviour {
 
-    bool pressed = false;
+    bool pressed = false, done = false;
+    public bool oneTime = false;
 
     int layer;
 
@@ -78,29 +79,35 @@ public class ButtonController : MonoBehaviour {
     void OnEnter(Collider other)
     {
 
-
-        if (tag == "ToggleButton")
+        if (!done)
         {
-            GetComponent<InteractionScript>().ButtonSwitchTouch();
-
-            foreach (Transform child in currents)
+            if (tag == "ToggleButton")
             {
-                child.GetComponent<CurrentTransmitter>().ChangeState(child.gameObject);
+                if (oneTime)
+                {
+                    done = true;
+                }
+                GetComponent<InteractionScript>().ButtonSwitchTouch();
+
+                foreach (Transform child in currents)
+                {
+                    child.GetComponent<CurrentTransmitter>().ChangeState(child.gameObject);
+                }
+
             }
 
-        }
+            else if (tag == "PushButton")
+            {
+                GetComponent<InteractionScript>().ButtonSwitchTouch();
+            }
 
-        else if (tag == "PushButton")
-        {
-            GetComponent<InteractionScript>().ButtonSwitchTouch();
+            Vector3 scale = mesh.localScale;
+            Vector3 pos = mesh.position;
+            scale.y /= 2;
+            pos.y -= 0.1f;
+            mesh.localScale = scale;
+            mesh.position = pos;
         }
-
-        Vector3 scale = mesh.localScale;
-        Vector3 pos = mesh.position;
-        scale.y /= 2;
-        pos.y -= 0.1f;
-        mesh.localScale = scale;
-        mesh.position = pos;
     }
 
 
@@ -111,38 +118,49 @@ public class ButtonController : MonoBehaviour {
             GetComponent<InteractionScript>().ButtonSwitchTouch();
         }
 
-        Vector3 scale = mesh.localScale;
-        Vector3 pos = mesh.position;
-        scale.y *= 2;
-        pos.y += 0.1f;
-        mesh.localScale = scale;
-        mesh.position = pos;
-        pressed = false;
+        if (!oneTime)
+        {
+            Vector3 scale = mesh.localScale;
+            Vector3 pos = mesh.position;
+            scale.y *= 2;
+            pos.y += 0.1f;
+            mesh.localScale = scale;
+            mesh.position = pos;
+            pressed = false;
+        }
     }
 
 
     void OnTriggerEnter(Collider other)
     {
 
-
-        if (tag == "ToggleButton")
+        if (!done)
         {
-            foreach (Transform child in currents)
+            if (tag == "ToggleButton")
             {
-                child.GetComponent<CurrentTransmitter>().ChangeState(child.gameObject);
+                if (oneTime)
+                {
+                    done = true;
+                }
+                GetComponent<InteractionScript>().ButtonSwitchTouch();
+                foreach (Transform child in currents)
+                {
+                    child.GetComponent<CurrentTransmitter>().ChangeState(child.gameObject);
+                }
             }
-        }
-        else if(tag == "PushButton")
-        {
-            GetComponent<InteractionScript>().ButtonSwitchTouch();
-        }
+            else if (tag == "PushButton")
+            {
+                GetComponent<InteractionScript>().ButtonSwitchTouch();
+            }
 
-        Vector3 scale = mesh.localScale;
-        Vector3 pos = mesh.position;
-        scale.y /= 2;
-        pos.y -= 0.1f;
-        mesh.localScale = scale;
-        mesh.position = pos;
+
+            Vector3 scale = mesh.localScale;
+            Vector3 pos = mesh.position;
+            scale.y /= 2;
+            pos.y -= 0.1f;
+            mesh.localScale = scale;
+            mesh.position = pos;
+        }
     }
 
 
@@ -154,11 +172,14 @@ public class ButtonController : MonoBehaviour {
             GetComponent<InteractionScript>().ButtonSwitchTouch();
         }
 
-        Vector3 scale = mesh.localScale;
-        Vector3 pos = mesh.position;
-        scale.y *= 2;
-        pos.y += 0.1f;
-        mesh.localScale = scale;
-        mesh.position = pos;
+        if (!oneTime)
+        {
+            Vector3 scale = mesh.localScale;
+            Vector3 pos = mesh.position;
+            scale.y *= 2;
+            pos.y += 0.1f;
+            mesh.localScale = scale;
+            mesh.position = pos;
+        }
     }
 }
