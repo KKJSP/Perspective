@@ -9,6 +9,10 @@ public class Settings : MonoBehaviour {
 
     private static Material BlackAccess, ColourOneAccess, ColourTwoAccess;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 30;
+    }
     private void Start()
     {
         BlackAccess = materialBlack;

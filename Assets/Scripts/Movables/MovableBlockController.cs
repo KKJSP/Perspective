@@ -58,10 +58,7 @@ public class MovableBlockController : MonoBehaviour {
 
     void MoveToNew()
     {
-        transform.Find("Front").GetComponent<Configurer>().SetMover(true);
-        transform.Find("Back").GetComponent<Configurer>().SetMover(true);
-        transform.Find("Right").GetComponent<Configurer>().SetMover(true);
-        transform.Find("Left").GetComponent<Configurer>().SetMover(true);
+
 
         if (coroutine1 != null)
         {
@@ -129,15 +126,7 @@ public class MovableBlockController : MonoBehaviour {
                 //PlayerController.PlayerMovedUnit(PlayerController.pos);
             }
             transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
-
-            if (tag == "MovableBlock")
-            {
-                transform.Find("Front").GetComponent<Configurer>().ReConfigure(2);
-                transform.Find("Back").GetComponent<Configurer>().ReConfigure(2);
-                transform.Find("Left").GetComponent<Configurer>().ReConfigure(2);
-                transform.Find("Right").GetComponent<Configurer>().ReConfigure(2);
-                ConfigCurrents();
-            }
+            
             PlayerController.CheckPlayerDeath();
             //PlayerController.PlayerMovedUnit(PlayerController.pos);
 
@@ -157,14 +146,10 @@ public class MovableBlockController : MonoBehaviour {
             InputManager.canMove = true;
         }
 
-        if (tag == "MovableBlock")
-        {
-            transform.Find("Front").GetComponent<Configurer>().ReConfigure(2);
-            transform.Find("Back").GetComponent<Configurer>().ReConfigure(2);
-            transform.Find("Left").GetComponent<Configurer>().ReConfigure(2);
-            transform.Find("Right").GetComponent<Configurer>().ReConfigure(2);
-            ConfigCurrents();
-        }
+
+        ConfigAll.ConfigQuads();
+        ConfigCurrents();
+        
 
 
     }
@@ -181,14 +166,10 @@ public class MovableBlockController : MonoBehaviour {
         }
 
         transform.Rotate(0f, angle, 0f);
-        if (tag == "MovableBlock")
-        {
-            transform.Find("Front").GetComponent<Configurer>().ReConfigure(2);
-            transform.Find("Back").GetComponent<Configurer>().ReConfigure(2);
-            transform.Find("Left").GetComponent<Configurer>().ReConfigure(2);
-            transform.Find("Right").GetComponent<Configurer>().ReConfigure(2);
-            ConfigCurrents();
-        }
+
+        ConfigAll.ConfigQuads();
+        ConfigCurrents();
+        
     }
 
 
