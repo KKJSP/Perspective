@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovableBlockController : MonoBehaviour {
 
-    bool isMoved = false, firstTime = false;
+    bool isMoved = false;
     public bool largeAnim = false;
 
     float maxDistanceDelta = 0.001f;
@@ -90,20 +90,14 @@ public class MovableBlockController : MonoBehaviour {
 
     IEnumerator MoveBlock(Vector3 target)
     {
-        transform.Find("DetectObject").GetComponent<DetectObjects>().CheckFirst();
+        if (objectAbove == null)
+        {
+            transform.Find("DetectObject").GetComponent<DetectObjects>().CheckFirst();
+        }
         bool gotIt = false; 
         gotIt = transform.Find("DetectObject").GetComponent<DetectObjects>().CheckObject(gotIt);
 
         Vector3 targetAbove = target;
-        if (objectAbove != null)
-        {
-            targetAbove.y += 1;
-            print(targetAbove);
-        }
-        else
-        {
-            firstTime = true;
-        }
 
         if (largeAnim)
         {
@@ -117,28 +111,27 @@ public class MovableBlockController : MonoBehaviour {
         {
             gotIt = transform.Find("DetectObject").GetComponent<DetectObjects>().CheckObject(gotIt);
 
+            transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
+
             if (objectAbove != null)
             {
-                if (firstTime)
-                {
-                    targetAbove.y += 1;
-                    firstTime = false;
-                }
-                objectAbove.transform.position = Vector3.MoveTowards(objectAbove.transform.position, targetAbove, maxDistanceDelta);
-                //PlayerController.PlayerMovedUnit(PlayerController.pos);
+                targetAbove = transform.position;
+                targetAbove.y += 1;
+                objectAbove.transform.position = targetAbove;
             }
-            transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
-            
-            PlayerController.CheckPlayerDeath();
-            //PlayerController.PlayerMovedUnit(PlayerController.pos);
 
+            PlayerController.CheckPlayerDeath();
             yield return new WaitForSeconds(0.01f);
         }
         if (objectAbove != null)
         {
+            targetAbove = transform.position;
+            targetAbove.y += 1;
             objectAbove.transform.position = targetAbove;
             objectAbove = null;
         }
+        //PlayerController.PlayerMovedUnit(PlayerController.pos);
+
 
         if (largeAnim)
         {
