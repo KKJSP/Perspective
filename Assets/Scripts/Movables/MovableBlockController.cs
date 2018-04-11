@@ -7,8 +7,9 @@ public class MovableBlockController : MonoBehaviour {
     bool isMoved = false, firstTime = false;
     public bool largeAnim = false;
 
-    public float maxDistanceDelta = 0.001f;
-    public float maxRotationDelta = 1f;
+    float maxDistanceDelta = 0.001f;
+    float maxRotationDelta = 1f;
+    public float time;
 
     GameObject mainCamera, objectAbove;
 
@@ -58,7 +59,8 @@ public class MovableBlockController : MonoBehaviour {
 
     void MoveToNew()
     {
-
+        maxDistanceDelta = Vector3.Distance(newPos, oldPos) / time;
+        maxRotationDelta = rotateBy / time;
 
         if (coroutine1 != null)
         {
@@ -158,11 +160,11 @@ public class MovableBlockController : MonoBehaviour {
     IEnumerator RotateBlock(float angle)
     {
         int rotDir = (int)Mathf.Sign(angle);
-        while (Mathf.Abs(angle) > 5)
+        while (Mathf.Abs(angle) > maxRotationDelta)
         {
             transform.Rotate(0f, maxRotationDelta*rotDir, 0f);
             angle -= maxRotationDelta * rotDir;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.01f);
         }
 
         transform.Rotate(0f, angle, 0f);
