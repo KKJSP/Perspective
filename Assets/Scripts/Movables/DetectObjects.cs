@@ -45,12 +45,15 @@ public class DetectObjects : MonoBehaviour {
         if (Physics.Raycast(position, dir, out hitInfo, PlayerController.maxRayDist, layer) && hitInfo.transform == transform && !gotIt)
         {
             Vector3 newpos = hitInfo.collider.gameObject.transform.parent.position;
-            transform.position = newpos;
+            PlayerController.player.transform.position = newpos;
+            transform.parent.GetComponent<MovableBlockController>().SetObjectAbove(PlayerController.player);
             if (PlayerController.PlayerMovedUnit != null)
             {
                 PlayerController.PlayerMovedUnit(pos);
             }
+            PlayerController.PlayerMovedUnit -= transform.parent.GetComponent<MovableBlockController>().CheckTeleport;
             return !gotIt;
+            
         }
 
         return gotIt;
@@ -79,4 +82,6 @@ public class DetectObjects : MonoBehaviour {
             transform.parent.GetComponent<MovableBlockController>().SetObjectAbove(null);
         }
     }
+
+
 }

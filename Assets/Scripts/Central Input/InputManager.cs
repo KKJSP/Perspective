@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour {
     public static bool lock3D = false, canDrag = true, canMove = true, canFall = true;
 
     bool changeAngle;
-
+    static int savedAngle;
     float angle;
 
     Vector3 pos;
@@ -107,7 +107,6 @@ public class InputManager : MonoBehaviour {
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
         if (canMove)
         {
             if (OnClickFunctions != null)
@@ -211,6 +210,7 @@ public class InputManager : MonoBehaviour {
         {
             CurrentEnabler.EnableCurrents(Mathf.RoundToInt(angle));
             Snapped(Mathf.RoundToInt(angle));
+            savedAngle = Mathf.RoundToInt(angle);
             angle = 0;
             canMove = true;
         }
@@ -291,6 +291,11 @@ public class InputManager : MonoBehaviour {
             }
         }
         return true;
+    }
+
+    public static int GetAngle()
+    {
+        return savedAngle;
     }
 
 }

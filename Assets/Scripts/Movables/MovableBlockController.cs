@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovableBlockController : MonoBehaviour {
 
-    bool isMoved = false;
+    bool isMoved = false, teleportFlag = false;
     public bool largeAnim = false;
 
     float maxDistanceDelta = 0.001f;
@@ -90,11 +90,19 @@ public class MovableBlockController : MonoBehaviour {
 
     IEnumerator MoveBlock(Vector3 target)
     {
+        
+        PlayerController.PlayerMovedUnit += CheckTeleport;
+        teleportFlag = false;
+        bool gotIt = false;
+
         if (objectAbove == null)
         {
             transform.Find("DetectObject").GetComponent<DetectObjects>().CheckFirst();
+            if (target.y - transform.position.y > 0)
+            {
+                gotIt = transform.Find("DetectObject").GetComponent<DetectObjects>().CheckObject(gotIt);
+            }
         }
-        bool gotIt = false; 
         gotIt = transform.Find("DetectObject").GetComponent<DetectObjects>().CheckObject(gotIt);
 
         Vector3 targetAbove = target;
@@ -109,7 +117,15 @@ public class MovableBlockController : MonoBehaviour {
         
         while (transform.position != target)
         {
-            gotIt = transform.Find("DetectObject").GetComponent<DetectObjects>().CheckObject(gotIt);
+            if (objectAbove == null && !teleportFlag && target.y - transform.position.y > 0)
+            {
+                gotIt = transform.Find("DetectObject").GetComponent<DetectObjects>().CheckObject(gotIt);
+            }
+
+            if(teleportFlag)
+            {
+                objectAbove = null;
+            }
 
             transform.position = Vector3.MoveTowards(transform.position, target, maxDistanceDelta);
 
@@ -118,9 +134,12 @@ public class MovableBlockController : MonoBehaviour {
                 targetAbove = transform.position;
                 targetAbove.y += 1;
                 objectAbove.transform.position = targetAbove;
+                PlayerController.prev_pos = -1;
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().MovePlayer(InputManager.GetAngle());
             }
 
-            PlayerController.CheckPlayerDeath();
+            //PlayerController.CheckPlayerDeath();
+
             yield return new WaitForSeconds(0.01f);
         }
         if (objectAbove != null)
@@ -128,9 +147,10 @@ public class MovableBlockController : MonoBehaviour {
             targetAbove = transform.position;
             targetAbove.y += 1;
             objectAbove.transform.position = targetAbove;
+            PlayerController.prev_pos = -1;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().MovePlayer(InputManager.GetAngle());
             objectAbove = null;
         }
-        //PlayerController.PlayerMovedUnit(PlayerController.pos);
 
 
         if (largeAnim)
@@ -144,8 +164,8 @@ public class MovableBlockController : MonoBehaviour {
 
         ConfigAll.ConfigQuads();
         ConfigCurrents();
-        
 
+        PlayerController.PlayerMovedUnit -= CheckTeleport;
 
     }
 
@@ -181,6 +201,14 @@ public class MovableBlockController : MonoBehaviour {
             {
                 child.GetComponent<CurrentTransmitter>().ReConfigure();
             }
+        }
+    }
+
+    public void CheckTeleport(int value)
+    {
+        if ((PlayerController.player.transform.position.x != transform.position.x || PlayerController.player.transform.position.z != transform.position.z || (PlayerController.player.transform.position.y - transform.position.y) >= 1.5f) && (objectAbove!=null))
+        {
+            teleportFlag = true;
         }
     }
 

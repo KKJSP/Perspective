@@ -8,19 +8,6 @@ public class CurrentEnabler : MonoBehaviour {
 
     public static GameObject[] currents, switches;
 
-    /*
-
-    private void OnEnable()
-    {
-        InputManager.Snapped += EnableCurrents;
-    }
-
-    private void OnDisable()
-    {
-        InputManager.Snapped -= EnableCurrents;
-    }
-
-    */
 
     // Use this for initialization
     void Start () {
@@ -53,7 +40,7 @@ public class CurrentEnabler : MonoBehaviour {
 
         foreach (GameObject current in currents)
         {
-            if(Mathf.RoundToInt(current.transform.localEulerAngles.y/90) == pos)
+            if(Mathf.RoundToInt(((current.transform.parent.localEulerAngles.y + current.transform.localEulerAngles.y) % 360)/ 90) == pos)
             {
                 current.GetComponent<CurrentTransmitter>().Configure();
             }
@@ -66,7 +53,7 @@ public class CurrentEnabler : MonoBehaviour {
 
         foreach(GameObject _switch in switches)
         {
-            if (Mathf.RoundToInt(_switch.transform.localEulerAngles.y / 90) == pos)
+            if (Mathf.RoundToInt(((_switch.transform.parent.localEulerAngles.y + _switch.transform.localEulerAngles.y) % 360)) == pos)
             {
                 _switch.GetComponent<CurrentTransmitter>().Configure();
             }

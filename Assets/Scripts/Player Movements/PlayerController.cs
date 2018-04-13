@@ -57,7 +57,6 @@ public class PlayerController : MonoBehaviour {
     //Teleporting Player on Each 2D View Switch
     public void MovePlayer(int toAngle)
     {
-
         lookAngle += toAngle;
         pos = (lookAngle/90)%4;
         while(pos < 0)
@@ -204,7 +203,7 @@ public class PlayerController : MonoBehaviour {
     GameObject CheckLeft(GameObject quadHit)
     {
         GameObject pathBlock = quadHit.transform.parent.gameObject;
-        if (pathBlock.transform.position.y + 1 == transform.position.y && pathBlock.transform.position.x == transform.position.x && pathBlock.transform.position.z == transform.position.z)
+        if (Mathf.RoundToInt(pathBlock.transform.position.y + 1) == Mathf.RoundToInt(transform.position.y) && pathBlock.transform.position.x == transform.position.x && pathBlock.transform.position.z == transform.position.z)
         {
             return quadHit;
         }
